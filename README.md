@@ -1,2 +1,5 @@
 # dual-period-simu
-Matlab simulation of my research on Dual-Period Task Model.
+
+-------
+
+Matlab Simulation of my research on Dual-Period task model.
