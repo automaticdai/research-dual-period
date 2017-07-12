@@ -33,6 +33,7 @@ int TASK_2_PERIOD = 100; // fastest
 
 float error[TASK_NUMBERS];      // current error
 float error_p[TASK_NUMBERS];    // pervious error
+float error_s[TASK_NUMBERS];    // sum of error
 int param;
 
 class PID_Controller {
@@ -493,19 +494,26 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     switch (tcb_running_id) {
         case 0:
             error[0] = abs(ref[0] - y[0]);
-            u[0] = 275 * (ref[0] - y[0]) + 0.00036 * ((error[0] - error_p[0]) / (TCB[0].T_ / 10000.0));
+            u[0] = 145 * (ref[0] - y[0]) + 0 * error_s[0] + 0 * error_p[0] / (TCB[0].T_ / 10000.0);
+            /* integrate error, but ignore change of reference! */
+            if (error[0] < 0.5) {
+                error_s[0] += error[0] * (TCB[0].T_ / 10000.0);
+            }
+            if (error_s[0] > 1) {
+                error_s[0] = 1;
+            }
             error_p[0] = error[0];
             break;
 
         case 1:
             error[1] = abs(ref[0] - y[1]);
-            u[1] = 675 * (ref[0] - y[1]);
+            u[1] = 125 * (ref[0] - y[1]);
             error_p[1] = error[1];
             break;
 
         case 2:
             error[2] = abs(ref[0] - y[2]);
-            u[2] = 675 * (ref[0] - y[2]);
+            u[2] = 125 * (ref[0] - y[2]);
             error_p[2] = error[2];
             break;
             
