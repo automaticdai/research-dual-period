@@ -19,13 +19,16 @@
 #define U(element) (*uPtrs[element])  /* Pointer to Input Port0 */
 
 /*************************************************************************/
-#define KERNEL_TIME             (0.000001)
+#define KERNEL_TIME             (0.0001)   /* 100us */
 #define TASK_NUMBERS            (3)
-#define AFBS_SAMPLING_PERIOD    (0.000030)
+#define AFBS_SAMPLING_PERIOD    (0.001)    /* 1ms   */
+#define T_GAMMA                 (0.300)    /* 300ms */
+#define TRIG_ERROR_THRESHOLD    (0.2)
 
-int TASK_0_PERIOD = 100; // normal
+/* these parameters will be later set in the simulink block */
+int TASK_0_PERIOD = 100; // switch
 int TASK_1_PERIOD = 100; // slowest
-int TASK_2_PERIOD = 100; // adapative
+int TASK_2_PERIOD = 100; // fastest
 
 
 float error[TASK_NUMBERS];      // current error
@@ -252,9 +255,9 @@ void afbs_update(void)
         // state feedback
         //TCB[1].T_ = floor(TASK_1_PERIOD * pow(exp(1.0), (-10.0 * error[1])) + TASK_1_PERIOD);
         
-        // dual-priority
+        // Dual-period model
         //if (error[2] > 0.3) {
-        if (step_count <= alpha * 1000) {
+        if (step_count <= alpha * (int)(T_GAMMA / AFBS_SAMPLING_PERIOD)) {
             /*
             if (TCB[2].T_ != 20) {
                 TCB[2].r_ = 1;
@@ -263,6 +266,14 @@ void afbs_update(void)
         }
         else {
             TCB[0].T_ = TASK_2_PERIOD;
+            
+            /* event detection */
+            if (step_count > (int)(T_GAMMA / AFBS_SAMPLING_PERIOD) 
+                && abs(error[0]) > TRIG_ERROR_THRESHOLD) {
+                TCB[0].T_ = TASK_1_PERIOD;
+                step_count = 0;
+            }
+            
         }
         step_count += 1;
     }
@@ -437,11 +448,6 @@ static void mdlInitializeSizes(SimStruct *S)
 } /* end mdlInitializeSizes */
 
 
-
-
-
-
-
 /* Function: mdlInitializeSampleTimes =========================================
  * Abstract:
  *    Two tasks: One continuous, one with discrete sample time of 1.0.
@@ -487,17 +493,20 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     switch (tcb_running_id) {
         case 0:
             error[0] = abs(ref[0] - y[0]);
-            u[0] = 800 * (ref[0] - y[0]);
+            u[0] = 275 * (ref[0] - y[0]) + 0.00036 * ((error[0] - error_p[0]) / (TCB[0].T_ / 10000.0));
+            error_p[0] = error[0];
             break;
 
         case 1:
             error[1] = abs(ref[0] - y[1]);
-            u[1] = 800 * (ref[0] - y[1]);
+            u[1] = 675 * (ref[0] - y[1]);
+            error_p[1] = error[1];
             break;
 
         case 2:
             error[2] = abs(ref[0] - y[2]);
-            u[2] = 800 * (ref[0] - y[2]); 
+            u[2] = 675 * (ref[0] - y[2]);
+            error_p[2] = error[2];
             break;
             
         case IDLE_TASK_IDX:

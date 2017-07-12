@@ -8,14 +8,14 @@ mex -g kernel.cpp
 %% Define System Dynamics Model
 % -40+80i, rising time 20ms
 % sampling time 2ms
-sys_zpk = zpk([], [-400+80i, -400-80i], [10000]);
+sys_zpk = zpk([], [-40+20i, -40-20i], [200]);
 sys = tf(sys_zpk);
 
 
 %% Parameters
-alpha = 99;
-h_h = 100;
-h_l = 200;
+alpha = 50;
+h_h =  50;
+h_l = 100;
 
 model_obj = get_param(bdroot,'Object');
 model_obj.refreshModelBlocks
@@ -32,8 +32,8 @@ legend('Task 0 (*)', 'Task 1', 'Task 2');
 
 
 %% plot cpu schedule
-f = figure();
-%plot_scheduling(simout_schedule.data);
+%f = figure();
+%h_plot_scheduling(simout_schedule.data);
 
 
 %% calculate utilization
