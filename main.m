@@ -13,10 +13,15 @@ sys = tf(sys_zpk);
 
 
 %% Parameters
-alpha = 50;
+alpha = 100;
 h_h =  50;
 h_l = 100;
 
+Q1  = 1;
+Q12 = 1;
+Q2  = 1;
+
+open('afbs_control.slx');
 model_obj = get_param(bdroot,'Object');
 model_obj.refreshModelBlocks
 
@@ -47,7 +52,7 @@ f = figure();
 barh([0 1 2 3],[u0/u; u1/u; u2/u; u3/u]);
 a = gca;
 a.YTick = ([0 1 2 3]);
-a.YTickLabel = ({'Task 0 (*)','Task 1 (T_h)','Task 2 (T_l)', 'IDLE'});
+a.YTickLabel = ({'Task 0 (DUAL)','Task 1 (T_h)','Task 2 (T_l)', 'Task 3 (IDLE)'});
 
 
 %% plot period adapation
@@ -64,5 +69,5 @@ set(h,'PaperPosition', [0 0 1 1]);
 
 
 %% output
-sum((1 - simout_y.data(:,1)) .^2) / 990.7848
-u0 / 6001
+%sum((1 - simout_y.data(:,1)) .^2) / 109.7535
+%u0 / 6001
