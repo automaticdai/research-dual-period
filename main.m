@@ -13,7 +13,7 @@ sys = tf(sys_zpk);
 
 
 %% Parameters
-alpha = 100;
+alpha = 50;
 h_h =  50;
 h_l = 100;
 
@@ -37,8 +37,8 @@ legend('Task 0 (*)', 'Task 1', 'Task 2');
 
 
 %% plot cpu schedule
-%f = figure();
-%h_plot_scheduling(simout_schedule.data);
+f = figure();
+h_plot_scheduling(simout_schedule.data);
 
 
 %% calculate utilization

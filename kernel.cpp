@@ -507,13 +507,13 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 
         case 1:
             error[1] = abs(ref[0] - y[1]);
-            u[1] = 125 * (ref[0] - y[1]);
+            u[1] = 145 * (ref[0] - y[1]);
             error_p[1] = error[1];
             break;
 
         case 2:
             error[2] = abs(ref[0] - y[2]);
-            u[2] = 125 * (ref[0] - y[2]);
+            u[2] = 145 * (ref[0] - y[2]);
             error_p[2] = error[2];
             break;
             

@@ -13,7 +13,7 @@ colorVal = {
 
 %TASK_NUM = 3;
 BLOCK_WIDTH_X = 1;          % precision of x
-BLOCK_WIDTH_Y = 0.05;
+BLOCK_WIDTH_Y = 0.4;
 
 rec(1) = 100;                   % x cordinate of rect
 rec(2) = -BLOCK_WIDTH_Y;        % y cordinate of rect
