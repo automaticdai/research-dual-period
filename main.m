@@ -14,12 +14,9 @@ sys = tf(sys_zpk);
 
 %% Parameters
 alpha = 50;
-h_h =  50;
-h_l = 100;
+h_h   = 50;
+h_l   = 100;
 
-Q1  = 1;
-Q12 = 1;
-Q2  = 1;
 
 open('afbs_control.slx');
 model_obj = get_param(bdroot,'Object');
@@ -34,7 +31,8 @@ sim('afbs_control.slx');
 f = figure();
 plot(simout_y.time, simout_y.data);
 legend('Task 0 (*)', 'Task 1', 'Task 2');
-
+xlabel('t')
+ylabel('y(t)')
 
 %% plot cpu schedule
 f = figure();
@@ -49,13 +47,13 @@ u3 = sum(simout_schedule.data==3);
 u = u0 + u1 + u2 + u3;
 
 f = figure();
-barh([0 1 2 3],[u0/u; u1/u; u2/u; u3/u]);
+barh([0 1 2 3],[u3/u; u2/u; u1/u; u0/u]);
 a = gca;
 a.YTick = ([0 1 2 3]);
-a.YTickLabel = ({'Task 0 (DUAL)','Task 1 (T_h)','Task 2 (T_l)', 'Task 3 (IDLE)'});
+a.YTickLabel = ({'Task 3 (IDLE)', 'Task 2 (T = T^L)','Task 1 (T = T^H)', 'Task 0 (DUAL)'});
+xlabel('utilization')
 
-
-%% plot period adapation
+%% plot period variations
 f = figure();
 plot(simout_periods.data);
 
@@ -68,6 +66,16 @@ set(h,'PaperPosition', [0 0 1 1]);
 %print(gcf, '-dpdf', 'test.pdf');
 
 
-%% output
+%% Control performance output
+% T = Th: 1.8943
+% T = Tl: 3.7609
+Q1  = 1;
+Q12 = 0.1;
+Q2  = 0.01;
+
+x = simout_y.data(:,1);
+u = simout_u.data(:,1);
+Pc = (x' * Q1 * x + 2 * x' * Q12 * u + u' * Q2 * u) * 0.0001 %(kernel = 0.1ms)
+Ps = u0
 %sum((1 - simout_y.data(:,1)) .^2) / 109.7535
 %u0 / 6001

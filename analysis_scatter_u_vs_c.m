@@ -22,19 +22,15 @@ array_u = [];
 array_c = [];
 array_a = [];
 
-for i = 0:5:100
+for i = 0:10:100
     data_filename = sprintf('./result/stat_sym_50_100_%d.mat', i);
     load(data_filename)
-    subplot(1,1,1)
     
-    for j = 1:11
-        scatter(z_u(j,:), z_c(j,:), 15, 'filled', ...
-                'LineWidth', 1.0, ...
-                'Marker', 'o', ...
-                'MarkerFaceColor', color_map(j, :) );
+    for j = 1:6
+        scatter(z_u(j,1:j), z_c(j,1:j), 'LineWidth', 1.0, 'Marker', '+')
         hold on;
     end
-    
+
     %array_u = [array_u, z_u'];
     %array_c = [array_c, z_c'];
     %array_a = [array_a, ones(numel(z_u),1) .* 0.1 .* i]
@@ -43,4 +39,6 @@ end
 %array_t_high = repmat(x', 1, 9);
 %array_t_low = repmat(y', 1, 9);
 
-legend('a = 0.0', 'a = 0.1','a = 0.2','a = 0.3','a = 0.4','a = 0.5','a = 0.6','a = 0.7','a = 0.8','a = 0.9', 'a = 1.0')
+legend('a = 0.0', 'a = 0.2', 'a = 0.4','a = 0.6','a = 0.8','a = 1.0')
+xlabel('P_s')
+ylabel('P_c')

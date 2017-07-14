@@ -1,12 +1,6 @@
 /*  File    : kernel.cpp
  *  Abstract:
- *
- *      An example S-function illustrating multiple sample times by implementing
- *         integrator -> ZOH(Ts=1second) -> UnitDelay(Ts=1second) 
- *      with an initial condition of 1.
- *	(e.g. an integrator followed by unit delay operation).
- *
- *  Copyright 1990-2013 The MathWorks, Inc.
+ *    Implmentation code for A-FBS kernel.
  */
 
 #define S_FUNCTION_NAME kernel
@@ -29,12 +23,13 @@
 int TASK_0_PERIOD = 100; // switch
 int TASK_1_PERIOD = 100; // slowest
 int TASK_2_PERIOD = 100; // fastest
+int TASK_EXECUTION_TIME = 10;
 
-
+/*************************************************************************/
+/* Class PID Controller */
 float error[TASK_NUMBERS];      // current error
 float error_p[TASK_NUMBERS];    // pervious error
 float error_s[TASK_NUMBERS];    // sum of error
-int param;
 
 class PID_Controller {
     double Kp;
@@ -58,6 +53,7 @@ class PID_Controller {
     }
 
 };
+/* end of Class PID */
 
 /*************************************************************************/
 /* AFBS Kernel */
@@ -437,15 +433,21 @@ static void mdlInitializeSizes(SimStruct *S)
     afbs_initilize(fps);
     
     /* create task list */
-    class Task a(0,  20,   TASK_0_PERIOD,  0,  0);
-    class Task b(1,  20,   TASK_1_PERIOD,  0,  0);
-    class Task c(2,  20,   TASK_2_PERIOD,  0,  0);
+    class Task a(0, TASK_EXECUTION_TIME, TASK_0_PERIOD,  0,  0);
+    class Task b(1, TASK_EXECUTION_TIME, TASK_1_PERIOD,  0,  0);
+    class Task c(2, TASK_EXECUTION_TIME, TASK_2_PERIOD,  0,  0);
 
     afbs_create_task(a, NULL, NULL, NULL);
     afbs_create_task(b, NULL, NULL, NULL);
     afbs_create_task(c, NULL, NULL, NULL);
     
     step_count = 0;
+    
+    for (int i = 0; i < TASK_NUMBERS; i++)
+    {
+        error_p[i] = 0;   
+        error_s[i] = 0;  
+    }
 } /* end mdlInitializeSizes */
 
 
@@ -488,41 +490,48 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     real_T *periods   = ssGetOutputPortRealSignal(S, 2);
    // g_timer = g_timer + KERNEL_TIME;
     
+    float t_refer;
+    float t_error;
+    
     afbs_schedule();
     afbs_run();
+    if (TCB[tcb_running_id].c_ == 1) {
+        switch (tcb_running_id) {
+            case 0:
+                t_refer = ref[0];
+                t_error = ref[0] - y[0];
+                error[0] = abs(ref[0] - y[0]);
+                u[0] = 75 * (t_error) + 80 * error_s[0] + 0.036 * error_p[0] / (TCB[0].T_ / 10000.0);
+                error_s[0] += t_error * (TCB[0].T_ / 10000.0);
+                error_p[0] = t_error;
+                break;
 
-    switch (tcb_running_id) {
-        case 0:
-            error[0] = abs(ref[0] - y[0]);
-            u[0] = 145 * (ref[0] - y[0]) + 0 * error_s[0] + 0 * error_p[0] / (TCB[0].T_ / 10000.0);
-            /* integrate error, but ignore change of reference! */
-            if (error[0] < 0.5) {
-                error_s[0] += error[0] * (TCB[0].T_ / 10000.0);
-            }
-            if (error_s[0] > 1) {
-                error_s[0] = 1;
-            }
-            error_p[0] = error[0];
-            break;
+            case 1:
+                t_refer = ref[0];
+                t_error = ref[0] - y[1];
+                error[1] = abs(ref[0] - y[1]);
+                u[1] = 75 * (t_error) + 80 * error_s[1] + 0.036 * error_p[1] / (TCB[1].T_ / 10000.0);
+                error_s[1] += t_error * (TCB[1].T_ / 10000.0);
+                error_p[1] = t_error;
+                break;
 
-        case 1:
-            error[1] = abs(ref[0] - y[1]);
-            u[1] = 145 * (ref[0] - y[1]);
-            error_p[1] = error[1];
-            break;
+            case 2:
+                t_refer = ref[0];
+                t_error = ref[0] - y[2];
+                error[2] = abs(ref[0] - y[2]);
+                u[2] = 75 * (t_error) + 80 * error_s[2] + 0.036 * error_p[2] / (TCB[2].T_ / 10000.0);
+                error_s[2] += t_error * (TCB[2].T_ / 10000.0);
+                error_p[2] = t_error;
+                break;
 
-        case 2:
-            error[2] = abs(ref[0] - y[2]);
-            u[2] = 145 * (ref[0] - y[2]);
-            error_p[2] = error[2];
-            break;
-            
-        case IDLE_TASK_IDX:
-            break;
-            
-        default:
-            ;
+            case IDLE_TASK_IDX:
+                break;
+
+            default:
+                ;
+        }
     }
+    
     *schedule = tcb_running_id;
     
     // afbs_dump_information();
