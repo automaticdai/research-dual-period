@@ -49,6 +49,6 @@ for i = 0:10:100
     scatter(i / 100.0, z_u(6, 1), 'r^')
     axis([0 1 0.4 1])
     xlabel('\alpha')
-    ylabel('P_c')
+    ylabel('P_s')
     hold on;
 end
