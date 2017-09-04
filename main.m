@@ -1,3 +1,4 @@
+% adaptive gain
 close all; clc; clear;
 
 
