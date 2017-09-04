@@ -1,4 +1,8 @@
+% issues:
 % disturbance modelling
+% change to (discrete) state-space model
+% adapt T_H and T_L
+
 close all; clc; clear;
 
 
@@ -14,10 +18,9 @@ sys = tf(sys_zpk);
 
 
 %% Parameters
-alpha = 50;
+alpha = 0.1 * 100;
 h_h   = 50;
 h_l   = 100;
-
 
 open('afbs_control.slx');
 model_obj = get_param(bdroot,'Object');
