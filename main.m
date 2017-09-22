@@ -16,20 +16,38 @@ mex -g kernel.cpp
 sys_zpk = zpk([], [-40+20i, -40-20i], [200]);
 sys = tf(sys_zpk);
 
+%% System Modelling 
 
-%% Parameters
+Gs = tf([3],[1 1 4]);
+Gss = ss(Gs);
+Gss1 = c2d(Gss, 0.1);
+Gss2 = c2d(Gss, 0.2);
+Gss3 = c2d(Gss, 0.3);
+
+% state-space model
+A = Gss.A;
+B = Gss.B;
+C = Gss.C;
+D = Gss.D;
+
+A2 = A .* 1.05;
+B2 = B;
+C2 = C;
+D2 = D;
+
+%% Task Parameters
 alpha = 0.1 * 100;
 h_h   = 50;
 h_l   = 100;
 
-open('afbs_control.slx');
+open('simu_state_space_model.slx');
 model_obj = get_param(bdroot,'Object');
 model_obj.refreshModelBlocks
 
 
 %% load and run simulation
-sim('afbs_control.slx');
-
+sim('simu_state_space_model.slx');
+break;
 
 %% plot system response
 f = figure();

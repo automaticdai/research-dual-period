@@ -14,7 +14,7 @@
 
 /*************************************************************************/
 #define KERNEL_TIME             (0.0001)   /* 100us */
-#define TASK_NUMBERS            (3)
+#define TASK_NUMBERS            (1)
 #define AFBS_SAMPLING_PERIOD    (0.001)    /* 1ms   */
 #define T_GAMMA                 (0.300)    /* 300ms */
 #define TRIG_ERROR_THRESHOLD    (0.2)
@@ -26,7 +26,7 @@ int TASK_2_PERIOD = 100; // fastest
 int TASK_EXECUTION_TIME = 10;
 
 /*************************************************************************/
-/* Class PID Controller */
+/* class: PID Controller */
 float error[TASK_NUMBERS];      // current error
 float error_p[TASK_NUMBERS];    // pervious error
 float error_s[TASK_NUMBERS];    // sum of error
@@ -35,7 +35,7 @@ class PID_Controller {
     double Kp;
     double Ki;
     double Kd;
-    double dt;              // sampling time
+    double dt;                  // sampling time
     double ref;
     double err_p;
     
@@ -60,7 +60,7 @@ class PID_Controller {
 using namespace std;
 extern long kernel_cnt;
 
-///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 /* Task Data Structure */
 typedef void(*callback)(void);
 
@@ -379,7 +379,6 @@ static void mdlInitializeSizes(SimStruct *S)
         return; /* The Simulink engine reports a mismatch error. */
     }
     
-    
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
     
@@ -408,14 +407,18 @@ static void mdlInitializeSizes(SimStruct *S)
     
     /* config outputs */
     if (!ssSetNumOutputPorts(S, 3)) return;
-    ssSetOutputPortWidth(S, 0, 3);
+    
+    // D/A
+    ssSetOutputPortWidth(S, 0, TASK_NUMBERS);
     ssSetOutputPortSampleTime(S, 0, KERNEL_TIME);
     ssSetOutputPortOffsetTime(S, 0, 0.0);
-
+    
+    // Schedule
     ssSetOutputPortWidth(S, 1, 1);
     ssSetOutputPortSampleTime(S, 1, KERNEL_TIME);
     ssSetOutputPortOffsetTime(S, 1, 0.0);
     
+    // Periods
     ssSetOutputPortWidth(S, 2, TASK_NUMBERS);
     ssSetOutputPortSampleTime(S, 2, KERNEL_TIME);
     ssSetOutputPortOffsetTime(S, 2, 0.0);    
@@ -504,24 +507,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
                 u[0] = 75 * (t_error) + 80 * error_s[0] + 0.036 * error_p[0] / (TCB[0].T_ / 10000.0);
                 error_s[0] += t_error * (TCB[0].T_ / 10000.0);
                 error_p[0] = t_error;
-                break;
-
-            case 1:
-                t_refer = ref[0];
-                t_error = ref[0] - y[1];
-                error[1] = abs(ref[0] - y[1]);
-                u[1] = 75 * (t_error) + 80 * error_s[1] + 0.036 * error_p[1] / (TCB[1].T_ / 10000.0);
-                error_s[1] += t_error * (TCB[1].T_ / 10000.0);
-                error_p[1] = t_error;
-                break;
-
-            case 2:
-                t_refer = ref[0];
-                t_error = ref[0] - y[2];
-                error[2] = abs(ref[0] - y[2]);
-                u[2] = 75 * (t_error) + 80 * error_s[2] + 0.036 * error_p[2] / (TCB[2].T_ / 10000.0);
-                error_s[2] += t_error * (TCB[2].T_ / 10000.0);
-                error_p[2] = t_error;
+                u[0] = 1;
                 break;
 
             case IDLE_TASK_IDX:
