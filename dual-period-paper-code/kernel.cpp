@@ -397,7 +397,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortDirectFeedThrough(S, 0, 1);
     ssSetInputPortRequiredContiguous(S, 0, 1);
     
-    // adc
+    // ADC
     ssSetInputPortWidth(S, 1, TASK_NUMBERS);
     ssSetInputPortSampleTime(S, 1, KERNEL_TIME);
     ssSetInputPortOffsetTime(S, 1, 0.0);
@@ -408,7 +408,7 @@ static void mdlInitializeSizes(SimStruct *S)
     /* config outputs */
     if (!ssSetNumOutputPorts(S, 3)) return;
     
-    // D/A
+    // DAC
     ssSetOutputPortWidth(S, 0, TASK_NUMBERS);
     ssSetOutputPortSampleTime(S, 0, KERNEL_TIME);
     ssSetOutputPortOffsetTime(S, 0, 0.0);
