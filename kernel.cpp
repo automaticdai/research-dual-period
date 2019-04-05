@@ -50,6 +50,7 @@ class PID_Controller {
     
     double calc_output(double y_new) {
         double error = y_new - ref;
+        return error;
     }
 
 };
@@ -65,12 +66,13 @@ extern long kernel_cnt;
 typedef void(*callback)(void);
 
 typedef enum { ready, running, pending, waiting, deleted } enum_task_status;
+
 char *task_status_literal[] = {
-    { "ready" },
-    { "running" },
-    { "pending" },
-    { "waiting" },
-    { "deleted" }
+    "ready",
+    "running",
+    "pending",
+    "waiting",
+    "deleted"
 };
 
 typedef enum { fps, edf } enum_scheduling_policy;
