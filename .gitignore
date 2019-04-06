@@ -1,1 +1,4 @@
-kernel.mexw64
+*.mexw64
+*.asv
+slprj/
+*.autosave
