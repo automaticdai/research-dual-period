@@ -5,11 +5,11 @@
 #include "task.h"
 
 char *task_status_literal[] = {
-    { "ready" },
-    { "running" },
-    { "pending" },
-    { "waiting" },
-    { "deleted" }
+    "ready",
+    "running",
+    "pending",
+    "waiting",
+    "deleted"
 };
 
 std::default_random_engine generator;

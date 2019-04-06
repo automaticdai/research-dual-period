@@ -1,3 +1,4 @@
+function [] = kernel_init()
 % cd into the folder
 cd('./afbs-kernel')
 
@@ -7,3 +8,5 @@ mex -g ./core/kernel.cpp ./core/afbs.cpp ./core/app.cpp ./core/utils.cpp ...
 
 % cd out
 cd('../')
+
+end

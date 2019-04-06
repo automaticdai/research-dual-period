@@ -10,10 +10,10 @@
 %   is called by GA in main.m.
 %%-------------------------------------------------------------------------
 
-function[] = run_single_simulation(tau1, tau2, tau3)
+%function[] = run_single_simulation(tau1, tau2, tau3)
 
 % set environment (will be moved to main.m)
-setenv('MW_MINGW64_LOC', 'C:\mingw64')
+setenv('MW_MINGW64_LOC', 'C:\TDM-GCC-64')
 
 % add paths
 addpath('afbs-kernel')
@@ -25,6 +25,19 @@ kernel_init()
 
 % passing parameters
 
+%% Process System Model
+sys_zpk = zpk([],[-400+80i, -400-80i], [1000]);
+sys = tf(sys_zpk);
+
+
+%% Parameters
+T1 = 1000;
+T2 = 1000;
+T3 = 1000;
+
+
+%% load and run simulation
+sim('simulink_afbs_demo.slx');
 
 % run
 
@@ -33,4 +46,4 @@ kernel_init()
 
 
 
-end
+%end

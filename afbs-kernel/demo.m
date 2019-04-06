@@ -1,7 +1,7 @@
 close all; clc; clear;
 
 %% Setup the enviroment
-run 'setup_env.m'
+kernel_init()
 
 
 %% Process System Model

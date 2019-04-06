@@ -31,11 +31,11 @@ void app_init(void) {
 
     /* override some tasks for control tasks */
     class Task tau1(TASK_1_IDX, 100, TASK_1_PERIOD, 0, 0);
-    //class Task tau2(7, 20, TASK_2_PERIOD, 0, 0);
-    //class Task tau3(8, 20, TASK_3_PERIOD, 0, 0);
+    class Task tau2(7, 20, TASK_2_PERIOD, 0, 0);
+    class Task tau3(8, 20, TASK_3_PERIOD, 0, 0);
     afbs_create_task(tau1, NULL, task_1_start_hook, task_1_finish_hook);
-    //afbs_create_task(tau2, NULL, task_2_start_hook, task_2_finish_hook);
-    //afbs_create_task(tau3, NULL, task_3_start_hook, task_3_finish_hook);
+    afbs_create_task(tau2, NULL, task_2_start_hook, task_2_finish_hook);
+    afbs_create_task(tau3, NULL, task_3_start_hook, task_3_finish_hook);
 
     return;
 }

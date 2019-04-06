@@ -2,9 +2,9 @@
 #define __APP_H_
 
 #define TASK_NUMBERS           (6)
-#define CONTROL_TASK_NUMBERS   (1)
-#define CONTROL_INPUT_NUMBERS  (2)
-#define CONTROL_OUTPUT_NUMBERS (1)
+#define CONTROL_TASK_NUMBERS   (3)
+#define CONTROL_INPUT_NUMBERS  (3)
+#define CONTROL_OUTPUT_NUMBERS (3)
 
 void app_init(void);
 

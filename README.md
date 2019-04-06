@@ -6,7 +6,7 @@ Matlab Simulation of the paper 'A Dual-Mode Strategy for Performance-Maximizatio
 
 ## Requirements
 1. Install MATLAB (c) R2017 or later
-2. Install MinGW x86_64 compile at: https://sourceforge.net/projects/mingw-w64/. DO NOT include any space in the installation folder!
+2. Install TDM-GCC MinGW-w64 compiler 4.9.2 (https://sourceforge.net/projects/tdm-gcc/files/TDM-GCC%20Installer/Previous/1.1309.0/). DO NOT include any space in the installation folder!
 
 
 ## Instructions
