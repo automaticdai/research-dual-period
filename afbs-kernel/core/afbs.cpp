@@ -266,7 +266,7 @@ void afbs_run(void)
     /* run monitor */
     if (gi_monitor_cnt <= 0) {
         gi_monitor_cnt = MONITOR_REFILL_CNT - 1;
-        afbs_performance_monitor();
+        //afbs_performance_monitor();
     }
     else {
         gi_monitor_cnt--;
@@ -282,6 +282,7 @@ void afbs_idle(void)
 /*----------------------------------------------------------------------------*/
 /* Monitor Related                                                            */
 /*----------------------------------------------------------------------------*/
+// [debug]
 int    t_period = 100;
 
 double ref_last = 0;
@@ -393,6 +394,7 @@ void analysis_control_performance(void)
 }
 
 
+// [debug]
 void afbs_performance_monitor(void)
 {
     double C[2] = {2.5, 0};

@@ -111,9 +111,10 @@ static void mdlInitializeSizes(SimStruct *S)
 
     /* print logs */
  	mexPrintf("---------------------------------------------- \r");
- 	mexPrintf("| AFBS-Kernel v1.0                           | \r");
+ 	mexPrintf("| AFBS-Kernel v1.0a                          | \r");
  	mexPrintf("| by Xiaotian Dai                            | \r");
- 	mexPrintf("| RTS Group, Univerisyt of York (c) 2017     | \r");
+ 	mexPrintf("| Real-Time Systems Group                    | \r");
+ 	mexPrintf("| Univerisyt of York (c) 2017 - 2019         | \r");
  	mexPrintf("---------------------------------------------- \r");
 
     /* initialize kernel */
@@ -189,11 +190,12 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         s_u[i] = afbs_state_out_load(i);
     }
 
+    /* get and output current running task */
     s_schedule[0] = (double)afbs_get_running_task_id();
 
     afbs_update();
 
-    /* record periods */
+    /* get and output periods */
     for (int i = 0; i < ssGetOutputPortWidth(S, 2); i++) {
         s_periods[i] = afbs_get_task_period(i) * KERNEL_TICK_TIME;
     }
