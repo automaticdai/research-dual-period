@@ -1,6 +1,10 @@
 #include "afbs.h"
 #include "app.h"
 
+
+
+
+
 int TASK_1_PERIOD = 1000;
 int TASK_2_PERIOD = 1000;
 int TASK_3_PERIOD = 1000;
@@ -9,11 +13,14 @@ int TASK_1_IDX = 0;
 int TASK_2_IDX = 1;
 int TASK_3_IDX = 2;
 
+
+
 /* task configurations */
+// pi, ci, ti, di, ri
 int task_config[TASK_NUMBERS][5] = {
-{0,   42,   157, 0, 0},
-{1,   10,   215, 0, 0},
-{2,   53,   499, 0, 0}
+{0,   50,   100, 0, 0},
+{1,   50,   100, 0, 0},
+{2,   50,   100, 0, 0}
 };
 
 void app_init(void) {
@@ -24,9 +31,9 @@ void app_init(void) {
 
     /* initialize task list */
     for (int i = 0; i < TASK_NUMBERS; i++) {
-        class Task ti(task_config[i][0], task_config[i][1], task_config[i][2],
+        class Task tau_i(task_config[i][0], task_config[i][1], task_config[i][2],
                     task_config[i][3], task_config[i][4]);
-        afbs_create_task(ti, NULL, NULL, NULL);
+        afbs_create_task(tau_i, NULL, NULL, NULL);
     }
 
     /* override some tasks for control tasks */
@@ -60,13 +67,14 @@ void task_1_start_hook(void) {
     return;
 }
 
+double u_p = 0;
 void task_1_finish_hook(void) {
     int idx = 0;
     
     /* Calculate Outputs */
-    double u = 4210;
+    double u = 20 - u_p;
 
-    
+    u_p = u;
     
     /* Send output to Simulink */
     afbs_state_out_set(0, u);

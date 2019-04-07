@@ -9,6 +9,7 @@
 
 #include <math.h>
 #include "simstruc.h"
+#include "mex.h"
 
 #define U(element) (*uPtrs[element])  /* Pointer to Input Port0 */
 
@@ -56,8 +57,10 @@ static void mdlInitializeSizes(SimStruct *S)
  	mexPrintf("| Univerisyt of York (c) 2017 - 2019         | \r");
  	mexPrintf("---------------------------------------------- \r");
     
-    mexPrintf("Cnt value: %d (this should be 0) \r", cnt_ii);
+    mexPrintf("Counter: %d (check this to be 0) \r", cnt_ii);
     cnt_ii = cnt_ii + 1;
+    
+    /* get parameters from MATLAB */
     
     /* check parameters */
     ssSetNumSFcnParams(S, 1);  /* Number of expected parameters */

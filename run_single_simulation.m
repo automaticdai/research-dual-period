@@ -10,8 +10,6 @@
 %   is called by GA in main.m.
 %%-------------------------------------------------------------------------
 
-%function[] = run_single_simulation(tau1, tau2, tau3)
-
 close all; clc; clear;
 
 % !!!important, do not delete
@@ -30,7 +28,7 @@ addpath('result')
 kernel_init()
 
 % passing parameters
-afbs_params = [1000, 2000, 50, 1000, 2000, 50, 1000, 2000, 50];
+afbs_params = [1000, 2000, 50, 10000, 1000, 2000, 50, 10000, 1000, 2000, 50, 10000];
 
 
 %% Process System Model
@@ -43,7 +41,7 @@ bandwidth(syscl) % / (2 * pi) * 30
 
 
 %% run simulation
-sim('simulink_afbs_demo.slx');
+sim('simulink_afbs_disturbance_rejection.slx');
 
 
 

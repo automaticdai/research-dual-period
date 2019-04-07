@@ -9,7 +9,7 @@
 #define STATES_REF_NUM         (3)
 #define STATES_IN_NUM          (3)
 #define STATES_OUT_NUM         (3)
-#define PARAM_NUM              (9)
+#define PARAM_NUM              (12)
 
 void app_init(void);
 
