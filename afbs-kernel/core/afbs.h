@@ -7,17 +7,14 @@
 #include "configs.h"
 #include "utils.h"
 #include "task.h"
+#include "app.h"
 
 /* Scheduler Kernel Variables */
 #define KERNEL_TICK_TIME     (0.000010)                // 10 us by default
-#define TASK_MAX_NUM         (6)
+#define TASK_MAX_NUM         (10)
 #define IDLE_TASK_IDX        (TASK_MAX_NUM)
 #define AFBS_PERIOD          (0.010)
 
-#define STATES_REF_NUM       (1)
-#define STATES_IN_NUM        (3)
-#define STATES_OUT_NUM       (3)
-#define PARAM_NUM            (1)
 
 typedef enum {fps, edf} enum_scheduling_policy;
 

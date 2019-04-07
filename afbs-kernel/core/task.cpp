@@ -4,12 +4,12 @@
 #include "types.h"
 #include "task.h"
 
-char *task_status_literal[] = {
+const char *task_status_literal[] = {
     "ready",
     "running",
     "pending",
     "waiting",
-    "deleted"
+    "deleted",
 };
 
 std::default_random_engine generator;

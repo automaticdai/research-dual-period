@@ -45,8 +45,20 @@ static void mdlCheckParameters(SimStruct *S)
  *    The sizes information is used by Simulink to determine the S-function
  *    block's characteristics (number of inputs, outputs, states, etc.).
  */
+int cnt_ii = 0;
 static void mdlInitializeSizes(SimStruct *S)
 {
+    /* print logs */
+ 	mexPrintf("---------------------------------------------- \r");
+ 	mexPrintf("| AFBS-Kernel v1.0a                          | \r");
+ 	mexPrintf("| by Xiaotian Dai                            | \r");
+ 	mexPrintf("| Real-Time Systems Group                    | \r");
+ 	mexPrintf("| Univerisyt of York (c) 2017 - 2019         | \r");
+ 	mexPrintf("---------------------------------------------- \r");
+    
+    mexPrintf("Cnt value: %d (this should be 0) \r", cnt_ii);
+    cnt_ii = cnt_ii + 1;
+    
     /* check parameters */
     ssSetNumSFcnParams(S, 1);  /* Number of expected parameters */
 
@@ -109,13 +121,6 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetOptions(S, (SS_OPTION_EXCEPTION_FREE_CODE |
                      SS_OPTION_PORT_SAMPLE_TIMES_ASSIGNED));
 
-    /* print logs */
- 	mexPrintf("---------------------------------------------- \r");
- 	mexPrintf("| AFBS-Kernel v1.0a                          | \r");
- 	mexPrintf("| by Xiaotian Dai                            | \r");
- 	mexPrintf("| Real-Time Systems Group                    | \r");
- 	mexPrintf("| Univerisyt of York (c) 2017 - 2019         | \r");
- 	mexPrintf("---------------------------------------------- \r");
 
     /* initialize kernel */
     afbs_initilize(fps);

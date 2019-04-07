@@ -14,7 +14,10 @@
 
 close all; clc; clear;
 
-% set environment (will be moved to main.m)
+% !!!important, do not delete
+clear mex;
+
+% set environment (change to your minGW path)
 setenv('MW_MINGW64_LOC', 'C:\TDM-GCC-64')
 %setenv('MW_MINGW64_LOC', 'C:\minGW64')
 
@@ -27,6 +30,7 @@ addpath('result')
 kernel_init()
 
 % passing parameters
+afbs_params = [1000, 2000, 50, 1000, 2000, 50, 1000, 2000, 50];
 
 
 %% Process System Model
@@ -36,9 +40,6 @@ syscl = feedback(sys,1);
 %bode(syscl)
 bandwidth(syscl) % / (2 * pi) * 30
 
-
-%% Task Parameters
-afbs_params = [1000, 1000, 1000];
 
 
 %% run simulation

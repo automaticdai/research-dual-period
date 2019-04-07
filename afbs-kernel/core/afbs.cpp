@@ -94,6 +94,7 @@ double afbs_state_out_load(int idx)
 void afbs_set_param(int idx, double value)
 {
     param[idx] = value;
+    mexPrintf("Parameter %i set to %f \r", idx, value);
 }
 
 double afbs_get_param(int idx)

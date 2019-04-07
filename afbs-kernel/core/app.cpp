@@ -13,10 +13,7 @@ int TASK_3_IDX = 2;
 int task_config[TASK_NUMBERS][5] = {
 {0,   42,   157, 0, 0},
 {1,   10,   215, 0, 0},
-{2,   53,   499, 0, 0},
-{3,   87,   777, 0, 0},
-{4,   48,   801, 0, 0},
-{5,  100,  1000, 0, 0},
+{2,   53,   499, 0, 0}
 };
 
 void app_init(void) {
@@ -51,7 +48,7 @@ double x[3];
 double error[3];
 
 void task_1_start_hook(void) {
-    idx = 0;
+    int idx = 0;
     
     // sample inputs
     ref[idx] = afbs_state_ref_load(idx);
@@ -64,7 +61,7 @@ void task_1_start_hook(void) {
 }
 
 void task_1_finish_hook(void) {
-    idx = 0;
+    int idx = 0;
     
     /* Calculate Outputs */
     double u = 4210;
@@ -85,40 +82,25 @@ void task_1_finish_hook(void) {
     u[0] = 1;
 */
 
-
     return;
 }
 
 void task_2_start_hook(void) {
-    /* sample inputs */
-    ref = afbs_state_ref_load(0);
-    x2 = afbs_state_in_load(1);
-    
+
     return;
 }
 
 void task_2_finish_hook(void) {
-    /* Calculate Outputs */
-    double u = 10;
 
-    /* Send output to Simulink */
-    afbs_state_out_set(1, u);
     return;
 }
 
 void task_3_start_hook(void) {
-    /* sample inputs */
-    ref = afbs_state_ref_load(0);
-    x3 = afbs_state_in_load(2);
-    
+
     return;
 }
 
 void task_3_finish_hook(void) {
-    /* Calculate Outputs */
-    double u = 20;
 
-    /* Send output to Simulink */
-    afbs_state_out_set(2, u);
     return;
 }
