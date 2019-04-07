@@ -12,8 +12,11 @@
 
 %function[] = run_single_simulation(tau1, tau2, tau3)
 
+close all; clc; clear;
+
 % set environment (will be moved to main.m)
 setenv('MW_MINGW64_LOC', 'C:\TDM-GCC-64')
+%setenv('MW_MINGW64_LOC', 'C:\minGW64')
 
 % add paths
 addpath('afbs-kernel')
@@ -25,23 +28,21 @@ kernel_init()
 
 % passing parameters
 
+
 %% Process System Model
 sys_zpk = zpk([],[-400+80i, -400-80i], [1000]);
 sys = tf(sys_zpk);
+syscl = feedback(sys,1);
+%bode(syscl)
+bandwidth(syscl) % / (2 * pi) * 30
 
 
-%% Parameters
-T1 = 1000;
-T2 = 1000;
-T3 = 1000;
+%% Task Parameters
+afbs_params = [1000, 1000, 1000];
 
 
-%% load and run simulation
+%% run simulation
 sim('simulink_afbs_demo.slx');
-
-% run
-
-
 
 
 
