@@ -4,8 +4,8 @@
  *    Simulink s-function.
  */
 
-#define S_FUNCTION_NAME kernel      /* name of the s-function */
 #define S_FUNCTION_LEVEL 2
+#define S_FUNCTION_NAME kernel      /* name of the s-function */
 
 #include <math.h>
 #include "simstruc.h"
@@ -22,6 +22,7 @@
  *====================*/
 
 #define PARAM1(S) ssGetSFcnParam(S,0)
+
 #define MDL_CHECK_PARAMETERS   /* Change to #undef to remove function */
 #if defined(MDL_CHECK_PARAMETERS) && defined(MATLAB_MEX_FILE)
 static void mdlCheckParameters(SimStruct *S)
@@ -40,13 +41,22 @@ static void mdlCheckParameters(SimStruct *S)
 #endif /* MDL_CHECK_PARAMETERS */
 
 
+#define MDL_START
+/* Function: mdlStart =========================================================
+ * Abstract:
+ *    Allocate class object
+ */
+int cnt_ii = 0;
+static void mdlStart(SimStruct *S)
+{
+
+}
 
 /* Function: mdlInitializeSizes ===============================================
  * Abstract:
  *    The sizes information is used by Simulink to determine the S-function
  *    block's characteristics (number of inputs, outputs, states, etc.).
  */
-int cnt_ii = 0;
 static void mdlInitializeSizes(SimStruct *S)
 {
     /* print logs */
@@ -59,8 +69,6 @@ static void mdlInitializeSizes(SimStruct *S)
     
     mexPrintf("Counter: %d (check this to be 0) \r", cnt_ii);
     cnt_ii = cnt_ii + 1;
-    
-    /* get parameters from MATLAB */
     
     /* check parameters */
     ssSetNumSFcnParams(S, 1);  /* Number of expected parameters */
@@ -85,7 +93,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
     // reference
     ssSetInputPortWidth(S, 0, CONTROL_TASK_NUMBERS);
-    ssSetInputPortSampleTime(S, 0, KERNEL_TICK_TIME);
+    ssSetInputPortSampleTime(S, 0, KERNEL_TICK_TIME); // INHERITED_SAMPLE_TIME
     ssSetInputPortOffsetTime(S, 0, 0.0);
     ssSetInputPortDirectFeedThrough(S, 0, 1);
     ssSetInputPortRequiredContiguous(S, 0, 1);
@@ -116,14 +124,13 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetOutputPortSampleTime(S, 2, KERNEL_TICK_TIME);
     ssSetOutputPortOffsetTime(S, 2, 0.0);
 
-    ssSetNumSampleTimes(S, PORT_BASED_SAMPLE_TIMES);
+    //ssSetNumSampleTimes(S, PORT_BASED_SAMPLE_TIMES);
 
     /* specify the sim state compliance to be same as a built-in block */
     ssSetSimStateCompliance(S, USE_DEFAULT_SIM_STATE);
 
     ssSetOptions(S, (SS_OPTION_EXCEPTION_FREE_CODE |
                      SS_OPTION_PORT_SAMPLE_TIMES_ASSIGNED));
-
 
     /* initialize kernel */
     afbs_initilize(fps);
@@ -137,7 +144,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
 /* Function: mdlInitializeSampleTimes =========================================
  * Abstract:
- *    Two tasks: One continuous, one with discrete sample time of 1.0.
+ *    Initilize sampling times.
  */
 static void mdlInitializeSampleTimes(SimStruct *S)
 {
@@ -247,6 +254,7 @@ static void mdlTerminate(SimStruct *S)
 
 }
 
+// Required S-function trailer
 #ifdef  MATLAB_MEX_FILE    /* Is this file being compiled as a MEX-file? */
 #include "simulink.c"      /* MEX-file interface mechanism */
 #else

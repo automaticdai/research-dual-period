@@ -12,26 +12,30 @@ const char *task_status_literal[] = {
     "deleted",
 };
 
+// for randomize task execution time
 std::default_random_engine generator;
 
 void Task::on_task_ready(void) {
-
     /* generate random task execution time */
-    int max = C_;
-    int min = C_ / 2;
+    if (rand_C) {
+        
+        int max = C_;
+        int min = C_ / 2;
 
-    float mu = (max - min) / 2.0 + min;
-    float sigma = (max - min) / 6.0;
-    std::normal_distribution<double> distribution(mu, sigma);
+        float mu = (max - min) / 2.0 + min;
+        float sigma = (max - min) / 6.0;
+        std::normal_distribution<double> distribution(mu, sigma);
 
-    double number = distribution(generator);
-    if (number > max) {c_ = max;}
-    else if (number < min) {c_ = min;}
-    else {c_ = (int)number;}
-    /* end */
+        double number = distribution(generator);
+        if (number > max) {c_ = max;}
+        else if (number < min) {c_ = min;}
+        else {c_ = (int)number;}
 
-    C_this_ = c_;
-
+        C_this_ = c_;
+    } else {
+        c_ = C_;
+    }
+    
     d_ = D_;
     r_ = T_;
     cnt_++;

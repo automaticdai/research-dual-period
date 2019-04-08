@@ -2,9 +2,6 @@
 #include "app.h"
 
 
-
-
-
 int TASK_1_PERIOD = 1000;
 int TASK_2_PERIOD = 1000;
 int TASK_3_PERIOD = 1000;
@@ -18,9 +15,9 @@ int TASK_3_IDX = 2;
 /* task configurations */
 // pi, ci, ti, di, ri
 int task_config[TASK_NUMBERS][5] = {
-{0,   50,   100, 0, 0},
-{1,   50,   100, 0, 0},
-{2,   50,   100, 0, 0}
+{0,   50,   1000, 0, 0},
+{1,   50,   1000, 0, 0},
+{2,   50,   1000, 0, 0}
 };
 
 void app_init(void) {
@@ -37,9 +34,9 @@ void app_init(void) {
     }
 
     /* override some tasks for control tasks */
-    class Task tau1(TASK_1_IDX, 20, TASK_1_PERIOD, 0, 0);
-    class Task tau2(TASK_2_IDX, 20, TASK_2_PERIOD, 0, 0);
-    class Task tau3(TASK_3_IDX, 20, TASK_3_PERIOD, 0, 0);
+    class Task tau1(TASK_1_IDX, 500, TASK_1_PERIOD, 0, 0);
+    class Task tau2(TASK_2_IDX, 500, TASK_2_PERIOD, 0, 0);
+    class Task tau3(TASK_3_IDX, 200, TASK_3_PERIOD, 0, 0);
     
     afbs_create_task(tau1, NULL, task_1_start_hook, task_1_finish_hook);
     afbs_create_task(tau2, NULL, task_2_start_hook, task_2_finish_hook);

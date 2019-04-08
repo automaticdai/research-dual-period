@@ -6,8 +6,18 @@
 using namespace std;
 
 extern long kernel_cnt;
+/* Task states:
+ 
+ */
+typedef enum {ready, running, pending, waiting, deleted} e_task_status;
 
-typedef enum {ready, running, pending, waiting, deleted} enum_task_status;
+/* Task types:
+ * periodic
+ * sporadic
+ * run_once (not yet implemented)
+ * dual: Dual Period Task     
+ */
+typedef enum {periodic, sporadic, run_once, dual} e_task_type;
 
 class Task
 {
@@ -18,6 +28,7 @@ public:
     int T_;
     int R_;
 
+    bool rand_C;
     int C_this_;    // computation time of this release (because it is random)
     
     int c_;         // computation time countdown
@@ -25,7 +36,8 @@ public:
     int r_;         // next release countdown
     int cnt_;       // release count
 
-    int type_;      // task type: periodic, sporadic, run_once (not yet used)
+
+    e_task_type type_; // task type
 
     /* variables used for calc response time */
     long release_time_cnt;
@@ -36,8 +48,10 @@ public:
     int BCRT_; // task best-case response time
     int WCRT_; // task worst-case response time
 
-
-    enum_task_status status_;
+    /* dual related */
+    
+    
+    e_task_status status_;
     callback onstart_hook_;
     callback onfinish_hook_;
 
@@ -57,7 +71,7 @@ public:
         onstart_hook_ = NULL;
         onfinish_hook_ = NULL;
 
-        type_ = 0;
+        type_ = periodic;
 
         release_time_cnt = 0;
         start_time_cnt = 0;
@@ -65,6 +79,8 @@ public:
 
         BCRT_ = 100000;
         WCRT_ = 0;
+        
+        rand_C = false;
     }
 
     ~Task() { ; }
