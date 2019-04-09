@@ -34,6 +34,7 @@ void Task::on_task_ready(void) {
         C_this_ = c_;
     } else {
         c_ = C_;
+        C_this_ = c_;
     }
     
     d_ = D_;

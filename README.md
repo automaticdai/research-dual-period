@@ -38,3 +38,4 @@ In MATLAB, `Home` -> `Open` -> 'path-to-repository'/main.c, then click `Run` on 
 ## Known Issues
 - For dual-period tasks: switch back to T^H is not implemented
 - EDF policy is not implemented
+- There is a limitation on the simulation time (as kernel_cnt is long)

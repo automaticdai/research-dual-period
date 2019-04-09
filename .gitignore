@@ -1,4 +1,5 @@
 *.mexw64
 *.asv
-slprj/
 *.autosave
+afbs-kernel/.vscode/
+slprj/
