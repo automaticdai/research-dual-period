@@ -5,6 +5,6 @@
 % 0 <= x1 <= 1 and 0 <= x2 <= 13
 
 function [c,c_eq] = myConstraints(x)
-c = [x(1)-x(2); x(2)-x(3)];
+c = [x(1)-x(2) -x(3)];
 c_eq = [];
 end
