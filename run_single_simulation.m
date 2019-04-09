@@ -34,10 +34,11 @@ simu.time = 1.0;    % time of simulation
 
 afbs_params = [0];
 
-taskset = [ 50, 200, 1000, 2000, 0.5, ...
-            50, 200, 1000, 2000, 0.5, ...
-            50, 200, 1000, 20000, 0.5, ...
-            50, 200, 2000, -1, -1];
+% [C, Th, Tl, alpha, D]
+taskset = [ 50, 200, 1000, 0.5,  0 ...
+                 50, 200, 1000, 0.5,  0 ...
+                 50, 200, 1000, 0.5,  0 ...
+                 50, 200,     -1,  -1, 200];
 
 % Ts reference
 tsref1 = 2.0;
@@ -71,7 +72,7 @@ diary(log_file_name);
 diary on;
 
 % run simulink
-sim('simulink_afbs_disturbance_rejection.slx');
+sim('simulink_afbs_disturbance_rejection.mdl');
 
 diary off;
 
