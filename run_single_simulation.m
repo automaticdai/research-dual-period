@@ -28,8 +28,10 @@ addpath('result')
 % compile and init the kernel
 kernel_init()
 
-% passing parameters
+% passing parameters and configurations
 % unit: 10us
+simu.time = 1.0;    % time of simulation
+
 afbs_params = [0];
 
 taskset = [ 50, 200, 1000, 2000, 0.5, ...
@@ -37,16 +39,61 @@ taskset = [ 50, 200, 1000, 2000, 0.5, ...
             50, 200, 1000, 20000, 0.5, ...
             50, 200, 2000, -1, -1];
 
+% Ts reference
+tsref1 = 2.0;
+tsref2 = 2.0;
+tsref3 = 2.0;
+
+% Ts minimal requirement
+tsmin1 = 5.0;
+tsmin2 = 5.0;
+tsmin3 = 5.0;
+
 
 %% Process System Model
-sys_zpk = zpk([],[-20+10i, -20-10i], 100);
+sys_zpk = zpk([],[1+10i, 1-10i], 100);
 sys = tf(sys_zpk);
 syscl = feedback(sys,1);
 %bode(syscl)
 fprintf("Highiest period: %f \r", (2 * pi) / (30 * bandwidth(syscl)))
 fprintf("Lowest period: %f \r", (2 * pi) / (2 * bandwidth(syscl)))
 
+
 %% run simulation
+% log
+log_file_name = sprintf('./log.txt');
+if (exist(log_file_name, 'file') == 2)
+    diary off;
+    delete(log_file_name);
+end
+
+diary(log_file_name);
+diary on;
+
+% run simulink
 sim('simulink_afbs_disturbance_rejection.slx');
 
-%end
+diary off;
+
+% calculate response time
+pi1 = stepinfo(simout_y.Data(:,1), simout_y.Time, 'SettlingTimeThreshold',0.02);
+pi2 = stepinfo(simout_y.Data(:,2), simout_y.Time, 'SettlingTimeThreshold',0.02);
+pi3 = stepinfo(simout_y.Data(:,3), simout_y.Time, 'SettlingTimeThreshold',0.02);
+
+settling_times = [pi1.SettlingTime, pi2.SettlingTime, pi3.SettlingTime]
+
+if (sum(simout_status.Data == -1) == 0)
+    % minimal control requirement / instable
+    if (sum(settling_times > 0.95 * simu.time) || pi1.SettlingTime > tsmin1 ...
+        || pi2.SettlingTime > tsmin2 || pi3.SettlingTime > tsmin3)
+        fitness = -2
+    else
+        fitness = sum(1.0 ./ settling_times)
+    end
+else
+    fitness = -1
+end
+
+fprintf("Fitness is: \r %0.3f \r",fitness)
+
+% end of file

@@ -17,7 +17,7 @@ typedef enum {ready, running, pending, waiting, deleted} e_task_status;
  * run_once (not yet implemented)
  * dual: Dual Period Task
  */
-typedef enum {periodic, sporadic, run_once, dual} e_task_type;
+typedef enum {PERIODIC, SPORADIC, RUN_ONCE, DUAL} e_task_type;
 
 class Task
 {
@@ -53,7 +53,8 @@ public:
     int TL_;
     int alpha_;
     int TGamma_;
-
+    int task_mode;
+    int tick_to_switch;
 
     e_task_status status_;
     callback onstart_hook_;
@@ -75,7 +76,7 @@ public:
         onstart_hook_ = NULL;
         onfinish_hook_ = NULL;
 
-        type_ = periodic;
+        type_ = PERIODIC;   // periodic by default
 
         release_time_cnt = 0;
         start_time_cnt = 0;
@@ -97,18 +98,7 @@ public:
     void set_onfinish_hook(callback onfinish);
     void repr(void);
 
-    void set_task_type(e_task_type type)
-    {
-      type_ = type;
-    }
-    
-    void set_dual_task_param(int TH, int TL, int alpha, int TGamma)
-    {
-      TH_ = TH;
-      TL_ = TL;
-      alpha_ = alpha;
-      TGamma_ = TGamma;
-    }
+    void set_task_type(e_task_type type){type_ = type;}
 };
 
 typedef class Task CTask;

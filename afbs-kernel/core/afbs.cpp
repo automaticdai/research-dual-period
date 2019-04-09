@@ -12,7 +12,7 @@
 
 #include "afbs.h"
 
-#define AFBS_DEBUG_ON   (1)
+//#define AFBS_DEBUG_ON   (1)
 #define AFBS_WARNING_ON (1)
 
 CTask TCB[TASK_MAX_NUM];
@@ -72,7 +72,6 @@ void afbs_set_status(int status_new)
 
 int afbs_get_status(void)
 {
-    status = kernel_cnt;
     return status;
 }
 
@@ -207,6 +206,7 @@ void afbs_update(void)
                 // check if a task missed its deadline
                 if (TCB[i].c_ != 0) {
                     TCB[i].on_task_missed_deadline();
+                    afbs_set_status(-1);
                     #ifdef AFBS_WARNING_ON
                         mexPrintf("[%0.4f] Task %d deadline missed! \r", afbs_get_current_time(), i);
                     #endif
@@ -217,6 +217,16 @@ void afbs_update(void)
                         mexPrintf("[%0.4f] Task %d ready! \r", afbs_get_current_time(), i);
                     #endif
                 }
+            }
+
+            // perform switch
+            if ( (TCB[i].type_ == DUAL) && (TCB[i].task_mode == 0) && (--TCB[i].tick_to_switch == 0))
+            {
+                afbs_set_task_period(i, TCB[i].TL_);
+                #ifdef AFBS_DEBUG_ON
+                    mexPrintf("[%0.4f] Task %d switched \r", afbs_get_current_time(), i);
+                #endif
+                TCB[i].task_mode == 1;
             }
         }
     }
@@ -301,6 +311,17 @@ void afbs_idle(void)
     idle_cnt++;
 }
 
+
+void afbs_set_as_dual_period(int i, int TH, int TL, int alpha, int TGamma)
+{
+    TCB[i].type_ = DUAL;
+    TCB[i].tick_to_switch = TGamma * alpha / 100;
+    TCB[i].TH_ = TH;
+    TCB[i].TL_ = TL;
+    TCB[i].alpha_ = alpha;
+    TCB[i].TGamma_ = TGamma;
+    TCB[i].task_mode = 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Monitor Related                                                            */

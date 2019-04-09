@@ -12,10 +12,13 @@ public:
     double x;
     double error_i;
     double error_last;
+    int    control_mode;    // not implemented yet
 
 public:
     PID_Controller(void){
-      ;
+        ref = 0;
+        error_i = 0;
+        error_last = 0;
     }
 
     PID_Controller(double Kp_, double Ki_, double Kd_, double Ts_) {
@@ -33,6 +36,10 @@ public:
       this->Ki = Ki_;
       this->Kd = Kd_;
       this->Ts = Ts_;
+    }
+
+    double set_sampling_time(double Ts_) {
+        this->Ts = Ts_;
     }
 
     double reset(void) {
