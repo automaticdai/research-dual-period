@@ -43,6 +43,9 @@ long   afbs_get_kernel_cnt(void);
 long   afbs_get_idle_cnt(void);
 double afbs_get_current_time(void);
 
+void   afbs_set_status(int);
+int    afbs_get_status(void);
+
 void   afbs_state_in_set(int, double);
 void   afbs_state_ref_set(int, double);
 double afbs_state_out_load(int);

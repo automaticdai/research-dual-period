@@ -1,3 +1,10 @@
+/*----------------------------------------------------------------------------
+ * AFBS-Kernel
+ * A Flexible Scheduling Simulink block for MATLAB.
+ * by Xiaotian Dai
+ * Real-Time Systems Group, University of York
+----------------------------------------------------------------------------*/
+
 #include <stddef.h>
 #include <math.h>
 
@@ -18,6 +25,7 @@ long   kernel_cnt;
 long   idle_cnt;
 int    tcb_running_id;
 int    step_count = 0;
+int    status = 0;
 
 /* system states */
 double states_ref[CONTROL_TASK_NUMBERS];
@@ -55,6 +63,17 @@ long afbs_get_idle_cnt(void)
 double afbs_get_current_time(void)
 {
     return kernel_cnt * KERNEL_TICK_TIME;
+}
+
+void afbs_set_status(int status_new)
+{
+    status = status_new;
+}
+
+int afbs_get_status(void)
+{
+    status = kernel_cnt;
+    return status;
 }
 
 

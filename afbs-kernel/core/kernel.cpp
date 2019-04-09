@@ -1,8 +1,9 @@
-/*  File:        kernel.cpp
- *  Description:
- *    Implmentation of the A-FBS kernel. This file serves as an interface to the
- *    Simulink s-function.
- */
+/*----------------------------------------------------------------------------
+ * AFBS-Kernel
+ * A Flexible Scheduling Simulink block for MATLAB.
+ * by Xiaotian Dai
+ * Real-Time Systems Group, University of York
+----------------------------------------------------------------------------*/
 
 #define S_FUNCTION_LEVEL 2
 #define S_FUNCTION_NAME kernel      /* name of the s-function */
@@ -125,7 +126,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetOutputPortOffsetTime(S, 1, 0.0);
 
     // Periods
-    ssSetOutputPortWidth(S, 2, TASK_NUMBERS);
+    ssSetOutputPortWidth(S, 2, TASK_MAX_NUM);
     ssSetOutputPortSampleTime(S, 2, KERNEL_TICK_TIME);
     ssSetOutputPortOffsetTime(S, 2, 0.0);
 
@@ -193,6 +194,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     real_T *s_u         = ssGetOutputPortRealSignal(S, 0);
     real_T *s_schedule  = ssGetOutputPortRealSignal(S, 1);
     real_T *s_periods   = ssGetOutputPortRealSignal(S, 2);
+    real_T *s_status    = ssGetOutputPortRealSignal(S, 3);
 
     /* pass s_ref and s_y to application tasks */
     /* tasks also have their own 'beliefs' of the system states */
@@ -215,15 +217,18 @@ static void mdlOutputs(SimStruct *S, int_T tid)
         s_u[i] = afbs_state_out_load(i);
     }
 
-    /* get and output current running task */
+    /* output current running task (for scheduling diagram) */
     s_schedule[0] = (double)afbs_get_running_task_id();
 
     afbs_update();
 
-    /* get and output periods */
+    /* output all task periods */
     for (int i = 0; i < ssGetOutputPortWidth(S, 2); i++) {
         s_periods[i] = afbs_get_task_period(i) * KERNEL_TICK_TIME;
     }
+
+    /* output status */
+    s_status[0] = (double)afbs_get_status();
 
 
 } /* end mdlOutputs */
