@@ -21,7 +21,8 @@
  * S-function methods *
  *====================*/
 
-#define PARAM1(S) ssGetSFcnParam(S,0)
+#define PARAM_0(S) ssGetSFcnParam(S, 0)
+#define PARAM_1(S) ssGetSFcnParam(S, 1)
 
 #define MDL_CHECK_PARAMETERS   /* Change to #undef to remove function */
 #if defined(MDL_CHECK_PARAMETERS) && defined(MATLAB_MEX_FILE)
@@ -34,9 +35,13 @@ static void mdlCheckParameters(SimStruct *S)
 //     ssSetErrorStatus(S, "Parameter to S-function must be nonnegative");
 //     return;
 //   }
-    for (int i = 0; i < PARAM_NUM; i++) {
-        afbs_set_param(i, mxGetPr(ssGetSFcnParam(S, 0))[i]);
+    mexPrintf("# of parameters (0): %d \r", mxGetNumberOfElements(PARAM_0(S))); 
+    mexPrintf("# of parameters (1): %d \r", mxGetNumberOfElements(PARAM_1(S)));
+
+    for (int i = 0; i < mxGetNumberOfElements(PARAM_1(S)); i++) {
+        afbs_set_param(i, mxGetPr(PARAM_1(S))[i]);
     }
+    mexPrintf("\r");
 }
 #endif /* MDL_CHECK_PARAMETERS */
 
@@ -66,12 +71,12 @@ static void mdlInitializeSizes(SimStruct *S)
  	mexPrintf("| Real-Time Systems Group                    | \r");
  	mexPrintf("| Univerisyt of York (c) 2017 - 2019         | \r");
  	mexPrintf("---------------------------------------------- \r");
-    
+
     mexPrintf("Counter: %d (check this to be 0) \r", cnt_ii);
     cnt_ii = cnt_ii + 1;
-    
+
     /* check parameters */
-    ssSetNumSFcnParams(S, 1);  /* Number of expected parameters */
+    ssSetNumSFcnParams(S, 2);  /* Number of expected parameters */
 
     if(ssGetNumSFcnParams(S) == ssGetSFcnParamsCount(S)) {
         mdlCheckParameters(S);
@@ -107,7 +112,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
 
     /* config outputs */
-    if (!ssSetNumOutputPorts(S, 3)) return;
+    if (!ssSetNumOutputPorts(S, 4)) return;
 
     // DAC
     ssSetOutputPortWidth(S, 0, CONTROL_OUTPUT_NUMBERS);
@@ -123,6 +128,11 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetOutputPortWidth(S, 2, TASK_NUMBERS);
     ssSetOutputPortSampleTime(S, 2, KERNEL_TICK_TIME);
     ssSetOutputPortOffsetTime(S, 2, 0.0);
+
+    // Status
+    ssSetOutputPortWidth(S, 3, 1);
+    ssSetOutputPortSampleTime(S, 3, KERNEL_TICK_TIME);
+    ssSetOutputPortOffsetTime(S, 3, 0.0);
 
     //ssSetNumSampleTimes(S, PORT_BASED_SAMPLE_TIMES);
 
@@ -201,7 +211,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     afbs_run();
 
     /* the kernel needs to collect the output from tasks */
-    for (int i = 0; i < STATES_OUT_NUM; i++) {
+    for (int i = 0; i < ssGetOutputPortWidth(S, 0); i++) {
         s_u[i] = afbs_state_out_load(i);
     }
 

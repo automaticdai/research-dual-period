@@ -7,7 +7,7 @@ using namespace std;
 
 extern long kernel_cnt;
 /* Task states:
- 
+
  */
 typedef enum {ready, running, pending, waiting, deleted} e_task_status;
 
@@ -15,7 +15,7 @@ typedef enum {ready, running, pending, waiting, deleted} e_task_status;
  * periodic
  * sporadic
  * run_once (not yet implemented)
- * dual: Dual Period Task     
+ * dual: Dual Period Task
  */
 typedef enum {periodic, sporadic, run_once, dual} e_task_type;
 
@@ -30,7 +30,7 @@ public:
 
     bool rand_C;
     int C_this_;    // computation time of this release (because it is random)
-    
+
     int c_;         // computation time countdown
     int d_;         // deadline countdown
     int r_;         // next release countdown
@@ -49,8 +49,12 @@ public:
     int WCRT_; // task worst-case response time
 
     /* dual related */
-    
-    
+    int TH_;
+    int TL_;
+    int alpha_;
+    int TGamma_;
+
+
     e_task_status status_;
     callback onstart_hook_;
     callback onfinish_hook_;
@@ -79,7 +83,7 @@ public:
 
         BCRT_ = 100000;
         WCRT_ = 0;
-        
+
         rand_C = false;
     }
 
@@ -92,6 +96,19 @@ public:
     void set_onstart_hook(callback onstart);
     void set_onfinish_hook(callback onfinish);
     void repr(void);
+
+    void set_task_type(e_task_type type)
+    {
+      type_ = type;
+    }
+    
+    void set_dual_task_param(int TH, int TL, int alpha, int TGamma)
+    {
+      TH_ = TH;
+      TL_ = TL;
+      alpha_ = alpha;
+      TGamma_ = TGamma;
+    }
 };
 
 typedef class Task CTask;

@@ -20,12 +20,12 @@ int    tcb_running_id;
 int    step_count = 0;
 
 /* system states */
-double states_ref[STATES_REF_NUM];
-double states_in[STATES_IN_NUM];
-double states_out[STATES_OUT_NUM];
+double states_ref[CONTROL_TASK_NUMBERS];
+double states_in[CONTROL_INPUT_NUMBERS];
+double states_out[CONTROL_OUTPUT_NUMBERS];
 
 /* s-func parameters from Simulink */
-double param[PARAM_NUM];
+double param[PARAM_MAX_NUM];
 
 /*----------------------------------------------------------------------------*/
 /* Kernel Related                                                             */
@@ -183,7 +183,8 @@ void afbs_update(void)
 {
     for (int i = 0; i < TASK_MAX_NUM; i++) {
         if (TCB[i].status_ != deleted) {
-            if (TCB[i].r_-- == 0 && TCB[i].status_ != ready) {
+            if ((--TCB[i].r_ == 0) && (TCB[i].status_ != ready)) {
+            //if ((TCB[i].status_ != ready) && (TCB[i].r_-- == 0) ) {
                 // check if a task missed its deadline
                 if (TCB[i].c_ != 0) {
                     TCB[i].on_task_missed_deadline();
@@ -229,6 +230,7 @@ void  afbs_schedule(void)
     }
 
     // run task scheduled hook
+    mexPrintf("%d \r", task_to_be_scheduled);
     if ((task_to_be_scheduled != IDLE_TASK_IDX) &&
        (TCB[task_to_be_scheduled].c_ == TCB[task_to_be_scheduled].C_this_)) {
         TCB[task_to_be_scheduled].on_task_start();
@@ -264,7 +266,8 @@ void afbs_run(void)
         kernel_cnt++;
     }
 
-    /* run monitor */
+    /* run performance monitor */
+    /*
     if (gi_monitor_cnt <= 0) {
         gi_monitor_cnt = MONITOR_REFILL_CNT - 1;
         //afbs_performance_monitor();
@@ -272,6 +275,7 @@ void afbs_run(void)
     else {
         gi_monitor_cnt--;
     }
+    */
 }
 
 void afbs_idle(void)

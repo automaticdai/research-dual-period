@@ -9,32 +9,59 @@ public:
     double Kd;
     double Ts;              // sampling time
     double ref;
+    double x;
     double error_i;
     double error_last;
+
 public:
+    PID_Controller(void){
+      ;
+    }
+
     PID_Controller(double Kp_, double Ki_, double Kd_, double Ts_) {
         this->Kp = Kp_;
         this->Ki = Ki_;
         this->Kd = Kd_;
-        this->dt = dt_;
-        ref = 1;
-        err_p = 0;
+        this->Ts = Ts_;
+        ref = 0;
+        error_i = 0;
+        error_last = 0;
     }
 
-    double output(double ref, double y) {
-        double error = ref - y;
+    double set_parameters(double Kp_, double Ki_, double Kd_, double Ts_) {
+      this->Kp = Kp_;
+      this->Ki = Ki_;
+      this->Kd = Kd_;
+      this->Ts = Ts_;
+    }
+
+    double reset(void) {
+        error_i = 0;
+        error_last = 0;
+    }
+
+    void sampling(double ref_, double x_) {
+        ref = ref_;
+        x = x_;
+        //mexPrintf("%f, %f\r", ref_, x_);
+    }
+
+    double output(void) {
+        double error; 
+        double u_p, u_i, u_d, u;
+        
+        error = ref - x;
+        
         u_p = this->Kp * error;
-        u_i = this->Ki * error_i; 
-        u_d = this->Kd * ((error - error_last) / Ts);       
-        
+        u_i = this->Ki * this->error_i;
+        u_d = this->Kd * ((error - this->error_last) / this->Ts);
         u = u_p + u_i + u_d;
-        
-        error_i += error_i * Ts;
-        error_last = error;
-                
+
+        this->error_i += error * this->Ts;
+        this->error_last = error;
+
         return u;
     }
-
 };
 
 #endif

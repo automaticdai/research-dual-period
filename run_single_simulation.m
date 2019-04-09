@@ -15,11 +15,12 @@ close all; clc; clear;
 % !!!important, do not delete
 clear mex;
 
-% set environment (change to your minGW path)
-setenv('MW_MINGW64_LOC', 'C:\TDM-GCC-64')
-%setenv('MW_MINGW64_LOC', 'C:\minGW64')
+% use the following commands in MATLAB to set environment
+% (change the path to your minGW installation path)
+%setenv('MW_MINGW64_LOC', 'C:\mingw-w64\mingw64')
+%mex -setup C++
 
-% add paths
+ % add paths
 addpath('afbs-kernel')
 addpath('analysis')
 addpath('result')
@@ -28,22 +29,24 @@ addpath('result')
 kernel_init()
 
 % passing parameters
-afbs_params = [1000, 2000, 50, 10000, 1000, 2000, 50, 10000, 1000, 2000, 50, 10000];
+% unit: 10us
+afbs_params = [0];
+
+taskset = [ 50, 200, 1000, 2000, 0.5, ...
+            50, 200, 1000, 2000, 0.5, ...
+            50, 200, 1000, 20000, 0.5, ...
+            50, 200, 2000, -1, -1];
 
 
 %% Process System Model
-sys_zpk = zpk([],[-400+80i, -400-80i], [1000]);
+sys_zpk = zpk([],[-20+10i, -20-10i], 100);
 sys = tf(sys_zpk);
 syscl = feedback(sys,1);
 %bode(syscl)
-bandwidth(syscl) % / (2 * pi) * 30
-
-
+fprintf("Highiest period: %f \r", (2 * pi) / (30 * bandwidth(syscl)))
+fprintf("Lowest period: %f \r", (2 * pi) / (2 * bandwidth(syscl)))
 
 %% run simulation
 sim('simulink_afbs_disturbance_rejection.slx');
-
-
-
 
 %end
