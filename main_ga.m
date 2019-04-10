@@ -6,7 +6,10 @@
 
 clc; clear;
 
- % add paths
+% for reproducability
+rng(1, 'twister')
+
+% add paths
 addpath('afbs-kernel')
 addpath('analysis')
 addpath('result')
@@ -26,11 +29,11 @@ ConsFcn = @myConstraints;
 
 % Optimising variables
 nVars = 9;
-LB = [200   200   0    200 200  0   200   200   0];
+LB = [200   200   0    200 200   0   200  200   0];
 UB = [500   500 100    500 500 100   500  500 100];
 
 % Optimising options
-opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize',100,'MaxGenerations',20,'Display','iter');
+opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize', 50,'MaxGenerations',20,'Display','iter');
 
 %,'CrossoverFcn',@crossoversinglepoint ,'CrossoverFraction',0.8,'MutationFcn',{@mutationuniform,0.2},
 
