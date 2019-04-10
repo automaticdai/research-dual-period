@@ -1,28 +1,25 @@
+%% compile kernel
+% use the following commands in MATLAB to set environment
+% (change the path to your minGW installation path)
+%setenv('MW_MINGW64_LOC', 'C:\mingw-w64\mingw64')
+%mex -setup C++
+
+clc; clear;
+
+ % add paths
+addpath('afbs-kernel')
+addpath('analysis')
+addpath('result')
+
+% compile and init the kernel
+kernel_init()
+
+
 %% initilize parameters
-% unit: 10us
-simu.time = 1.0;    % time of simulation
-
-afbs_params = [0];
-
-% [C, Th, Tl, alpha, D]
-taskset = [ 50, 200, 1000, 0.5,  0 ...
-                 50, 200, 1000, 0.5,  0 ...
-                 50, 200, 1000, 0.5,  0 ...
-                 50, 200,     -1,  -1, 200];
-
-% Ts reference
-tsref1 = 2.0;
-tsref2 = 2.0;
-tsref3 = 2.0;
-
-% Ts minimal requirement
-tsmin1 = 5.0;
-tsmin2 = 5.0;
-tsmin3 = 5.0;
+init();
 
 
 %% main code for minimising via GA
-
 % Ideal Point
 
 
@@ -31,16 +28,18 @@ objFcn = @myFitness;
 ConsFcn  = @myConstraints;
 
 % Optimising variables
-nVars = 3;
-LB = [0 0 0];
-UB = [1000 1000 1000];
+nVars = 9;
+LB = [1000  1000  0 1000 1000 0 1000 1000 0];
+UB = [5000 5000 100 5000 5000 100 5000 5000 100];
 
 % Optimising options
-opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize',5,'MaxGenerations',5,'CrossoverFcn',@crossoversinglepoint ,'CrossoverFraction',0.8,'MutationFcn',{@mutationuniform,0.2},'Display','iter');
+opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize',100,'MaxGenerations',50,'Display','iter');
+
+%,'CrossoverFcn',@crossoversinglepoint ,'CrossoverFraction',0.8,'MutationFcn',{@mutationuniform,0.2},
 
 % GA main function
-[x,fval,exitflag] = ga(objFcn, nVars,[],[],[],[],LB,UB,[], [1 2],opts);
+[x,fval,exitflag] = ga(objFcn, nVars,[],[],[],[],LB,UB,ConsFcn, [1 2 3 4 5 6 7 8 9],opts);
 
 final_config = sprintf('%d ', x);
-final_output = 1000 - fval;
+final_output = 100 - fval;
 gaExit = exitflag;

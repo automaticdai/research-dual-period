@@ -32,13 +32,10 @@ kernel_init()
 % unit: 10us
 simu.time = 1.0;    % time of simulation
 
-afbs_params = [0];
+simu.afbs_params = [0];
 
-% [C, Th, Tl, alpha, D]
-taskset = [ 50, 200, 1000, 0.5,  0 ...
-                 50, 200, 1000, 0.5,  0 ...
-                 50, 200, 1000, 0.5,  0 ...
-                 50, 200,     -1,  -1, 200];
+%               [C, D, Th, Tl, alpha, idx]
+simu.taskset = [5,2000,2200,3100,50,0,     5,2000,2200,3200,50,1,   5,2000,2200,3300,50,2,   5,2200,2200,-1,-1,-1,   5,2500,2500,-1,-1,-1];
 
 % Ts reference
 tsref1 = 2.0;
@@ -46,18 +43,12 @@ tsref2 = 2.0;
 tsref3 = 2.0;
 
 % Ts minimal requirement
-tsmin1 = 5.0;
-tsmin2 = 5.0;
-tsmin3 = 5.0;
+tsmin1 = 1.2;
+tsmin2 = 1.2;
+tsmin3 = 1.2;
 
 
-%% Process System Model
-sys_zpk = zpk([],[1+10i, 1-10i], 100);
-sys = tf(sys_zpk);
-syscl = feedback(sys,1);
-%bode(syscl)
-fprintf("Highiest period: %f \r", (2 * pi) / (30 * bandwidth(syscl)))
-fprintf("Lowest period: %f \r", (2 * pi) / (2 * bandwidth(syscl)))
+init();
 
 
 %% run simulation
