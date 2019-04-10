@@ -26,8 +26,8 @@ ConsFcn = @myConstraints;
 
 % Optimising variables
 nVars = 9;
-LB = [100 100   0   100 100   0   100 100   0];
-UB = [500 500 100   500 500 100   500 500 100];
+LB = [200   200   0    200 200  0   200   200   0];
+UB = [500   500 100    500 500 100   500  500 100];
 
 % Optimising options
 opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize',100,'MaxGenerations',20,'Display','iter');

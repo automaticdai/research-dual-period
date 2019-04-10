@@ -98,16 +98,17 @@ if (sum(simout_status.Data == -1) == 0)
     % minimal control requirement / instable
     if (sum(settling_times > 0.95 * simu.time) || pi1.SettlingTime > tsmin1 ...
         || pi2.SettlingTime > tsmin2 || pi3.SettlingTime > tsmin3)
-        fitness = sum(settling_times);
+        fitness = sum(1.0 - settling_times) / num_of_control;
     else
-        fitness = sum(settling_times);
+        fitness = sum(1.0 - settling_times) / num_of_control;
     end
 else
-    fitness = simu.time * 3;
+    fitness = 0.0;
 end
 
-fprintf("Fitness is: \r %0.3f \r",fitness);
+%fprintf("Fitness is: \r %0.3f \r",fitness);
 
-y = fitness;
+
+y = 1.0 - fitness;
 
 end
