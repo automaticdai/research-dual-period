@@ -1,1 +1,6 @@
-kernel.mexw64
+*.mexw64
+*.asv
+*.autosave
+afbs-kernel/.vscode/
+slprj/
+log.txt
