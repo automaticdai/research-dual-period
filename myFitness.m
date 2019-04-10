@@ -4,6 +4,10 @@ function y = myFitness(x)
 
 clear mex;
 
+% --------------------------
+% Parameters
+% --------------------------
+
 %x = [2200 2800 50, 2200 2800 50, 2200 2800 50];
 disp(x)
 
@@ -24,12 +28,10 @@ tsmin3 = 5.0;
 % Process System Model
 sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
 sys = tf(sys_zpk);
-%syscl = feedback(sys,1);
 
-%bode(syscl)
-%fprintf("Highiest period: %f \r", (2 * pi) / (30 * bandwidth(syscl)))
-%fprintf("Lowest period: %f \r", (2 * pi) / (2 * bandwidth(syscl)))
-
+% --------------------------
+% Generate Taskset
+% --------------------------
 % generate non-control tasks
 % [C, Th, Tl, alpha, D]
 % taskset_nc = [500, 2500, 2500, -1, -1, -1; ...
@@ -67,7 +69,9 @@ simu.taskset = taskset_inv(:);
 
 %disp(simu.taskset)
 
-% call Simulink
+% --------------------------
+% Run Simulink
+% --------------------------
 assignin('base','simu',simu)
 assignin('base','sys',sys)
 
@@ -79,7 +83,9 @@ simout = sim(mdl_name, 'SimulationMode','normal', 'SrcWorkspace','current');
 simout_y = get(simout,'simout_y');
 simout_status = get(simout,'simout_status');
 
-% calculate fitness function
+% --------------------------
+% Calculate fitness function
+% --------------------------
 pi1 = stepinfo(simout_y.Data(:,1), simout_y.Time, 'SettlingTimeThreshold',0.02);
 pi2 = stepinfo(simout_y.Data(:,2), simout_y.Time, 'SettlingTimeThreshold',0.02);
 pi3 = stepinfo(simout_y.Data(:,3), simout_y.Time, 'SettlingTimeThreshold',0.02);
