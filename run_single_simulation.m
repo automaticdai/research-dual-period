@@ -63,7 +63,7 @@ diary(log_file_name);
 diary on;
 
 % run simulink
-sim('simulink_afbs_disturbance_rejection.mdl');
+sim('simu_afbs_control.mdl');
 
 diary off;
 

@@ -4,20 +4,12 @@ function y = myFitness(x)
 
 clear mex;
 
-%[C, Th, Tl, alpha, D]
-% taskset_nc = [500, 2500, 2500, -1, -1, -1; ...
-%               500, 2400, 2400, -1, -1, -1; ...
-%             ];
-% 
-
 %x = [2200 2800 50, 2200 2800 50, 2200 2800 50];
-
 disp(x)
 
 % unit: 10us
 simu.time = 1.0;    % time of simulation
 simu.afbs_params = [0];
-
 
 % Ts reference
 tsref1 = 2.0;
@@ -32,12 +24,17 @@ tsmin3 = 5.0;
 % Process System Model
 sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
 sys = tf(sys_zpk);
-syscl = feedback(sys,1);
+%syscl = feedback(sys,1);
 
 %bode(syscl)
 %fprintf("Highiest period: %f \r", (2 * pi) / (30 * bandwidth(syscl)))
 %fprintf("Lowest period: %f \r", (2 * pi) / (2 * bandwidth(syscl)))
 
+% generate non-control tasks
+% [C, Th, Tl, alpha, D]
+% taskset_nc = [500, 2500, 2500, -1, -1, -1; ...
+%               500, 2400, 2400, -1, -1, -1; ...
+%             ];
 taskset_nc = [];
 
 num_of_control = length(x) / 3;
@@ -74,10 +71,11 @@ simu.taskset = taskset_inv(:);
 assignin('base','simu',simu)
 assignin('base','sys',sys)
 
-mdl = 'simulink_afbs_disturbance_rejection.mdl';
+mdl_name = 'simu_afbs_control.mdl';
 %open_system(mdl);
 %set_param(gcs,'SimulationCommand','Update')
-simout = sim(mdl, 'SimulationMode','normal', 'SrcWorkspace','current');
+simout = sim(mdl_name, 'SimulationMode','normal', 'SrcWorkspace','current');
+
 simout_y = get(simout,'simout_y');
 simout_status = get(simout,'simout_status');
 

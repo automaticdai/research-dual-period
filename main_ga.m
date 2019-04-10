@@ -21,7 +21,7 @@ init();
 
 %% main code for minimising via GA
 % Ideal Point
-% 
+
 
 % objective and constraint functions
 objFcn = @myFitness;
@@ -29,8 +29,8 @@ ConsFcn  = @myConstraints;
 
 % Optimising variables
 nVars = 9;
-LB = [1000  1000 0   1000 1000 0   1000 1000 0];
-UB = [5000  5000 100 5000 5000 100 5000 5000 100];
+LB = [1000  1000  0 1000 1000 0 1000 1000 0];
+UB = [5000 5000 100 5000 5000 100 5000 5000 100];
 
 % Optimising options
 opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize',100,'MaxGenerations',50,'Display','iter');
