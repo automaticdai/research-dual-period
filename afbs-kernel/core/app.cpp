@@ -38,11 +38,11 @@ void app_init(void) {
                 afbs_create_task(tau, NULL, task_3_start_hook, task_3_finish_hook);
             }
             controllers[i].set_parameters(26.35, 66.09, 2.064, TH * KERNEL_TICK_TIME);
-            afbs_set_as_dual_period(i, TH, TL, alpha, 100000);  // switching period = 1s
+            afbs_set_as_dual_period(i, TH, TL, alpha, 10000);  // switching period = 1s
         } else {
             afbs_create_task(tau, NULL, NULL, NULL);
         }
-        
+
         j = j + 6;
     }
 

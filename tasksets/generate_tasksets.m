@@ -1,12 +1,15 @@
 % task_generator.m
 % generate synthetic task sets
+format long g
+rng('default')
+
 
 %% Parameters
 N = 5;                              % number of tasks
 U_bound = N * (power(2, 1/N) - 1);  % utilization boundary
-U_bar = 0.6;                        % desired utilization
-Ti_lower = 2000;                    % taskset period upper bound (unit:10us)
-Ti_upper = 100000;                  % taskset period lower bound (unit:10us)
+U_bar = 0.80;                        % desired utilization
+Ti_lower = 200;                     % taskset period upper bound (unit:100us)
+Ti_upper = 10000;                   % taskset period lower bound (unit:100us)
 
 Ui = zeros(N, 1);
 Ci = zeros(N, 1);
@@ -40,14 +43,20 @@ Ci = Ui .* Ti;
 
 %% Put everything into taskset[], truncate and sort with RM
 Di = Ti;
-taskset = [zeros(N, 1), floor(Ci), floor(Ti), floor(Di)];
+TiL = ones(N, 1) * -1;
+alpha = ones(N, 1) * -1;
+idx = ones(N,1) * -1;
+taskset = [floor(Ci), floor(Di), floor(Ti), TiL, alpha, idx];
 
-[~,idx] = sort(taskset(:,3)); % sort just the first column
-taskset = taskset(idx,:);     % sort the whole matrix using the sort indices
-taskset(:,1) = [0:size(taskset,1)-1]';
 
 % print
-fprintf('\r Generated Taskset (pi, Ci, Ti, Di == Ti): \r\r');
+fprintf('\r Generated Taskset (Ci, Di == Ti, Ti, TiL, alpha, idx): \r\r');
 disp(taskset);
 
-fprintf('The actual task total utilization is: %0.3f \r', sum(taskset(:,2) ./ taskset(:,3)));
+fprintf('The actual task total utilization is: %0.3f \r', sum(taskset(:,1) ./ taskset(:,2)));
+
+% save dataset
+filename = sprintf("taskset_u_%0.2f.mat", U_bar);
+
+taskset_nc = taskset;
+save(filename, 'taskset_nc');

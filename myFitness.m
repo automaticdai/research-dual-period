@@ -9,21 +9,23 @@ clear mex;
 % --------------------------
 
 %x = [2200 2800 50, 2200 2800 50, 2200 2800 50];
-disp(x)
+%disp(x)
 
 % unit: 10us
 simu.time = 1.0;    % time of simulation
 simu.afbs_params = [0];
 
+U_bar = 0.30;
+
 % Ts reference
-tsref1 = 2.0;
-tsref2 = 2.0;
-tsref3 = 2.0;
+tsref1 = 1.0;
+tsref2 = 1.0;
+tsref3 = 1.0;
 
 % Ts minimal requirement
-tsmin1 = 5.0;
-tsmin2 = 5.0;
-tsmin3 = 5.0;
+tsmin1 = 1.0;
+tsmin2 = 1.0;
+tsmin3 = 1.0;
 
 % Process System Model
 sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
@@ -34,10 +36,9 @@ sys = tf(sys_zpk);
 % --------------------------
 % generate non-control tasks
 % [C, Th, Tl, alpha, D]
-% taskset_nc = [500, 2500, 2500, -1, -1, -1; ...
-%               500, 2400, 2400, -1, -1, -1; ...
-%             ];
-taskset_nc = [];
+% load non-control tasks
+filename = sprintf("taskset_u_%0.2f.mat", U_bar);
+load(filename);
 
 num_of_control = length(x) / 3;
 
@@ -50,8 +51,8 @@ end
 control_index = 0:num_of_control - 1;
 control_index = control_index';
 
-x_c = ones(1,num_of_control) * 500; % C = 5ms
-x_d = ones(1,num_of_control) * 2000;% D = 20ms
+x_c = ones(1,num_of_control) * 50;   % C = 5ms
+x_d = ones(1,num_of_control) * 200;  % D = 20ms
 
 taskset_c  = [x_c' x_d' x_decoded, control_index];
 
@@ -75,7 +76,7 @@ simu.taskset = taskset_inv(:);
 assignin('base','simu',simu)
 assignin('base','sys',sys)
 
-mdl_name = 'simu_afbs_control.mdl';
+mdl_name = 'simu_afbs_control_2017.mdl';
 %open_system(mdl);
 %set_param(gcs,'SimulationCommand','Update')
 simout = sim(mdl_name, 'SimulationMode','normal', 'SrcWorkspace','current');
@@ -92,17 +93,17 @@ pi3 = stepinfo(simout_y.Data(:,3), simout_y.Time, 'SettlingTimeThreshold',0.02);
 
 settling_times = [pi1.SettlingTime, pi2.SettlingTime, pi3.SettlingTime];
 
+% if no exception (scheduable)
 if (sum(simout_status.Data == -1) == 0)
     % minimal control requirement / instable
     if (sum(settling_times > 0.95 * simu.time) || pi1.SettlingTime > tsmin1 ...
         || pi2.SettlingTime > tsmin2 || pi3.SettlingTime > tsmin3)
-        %fitness = 102;
-        fitness = 100 - sum(1.0 ./ settling_times);
+        fitness = sum(settling_times);
     else
-        fitness = 100 - sum(1.0 ./ settling_times);
+        fitness = sum(settling_times);
     end
 else
-    fitness = 101;
+    fitness = simu.time * 3;
 end
 
 fprintf("Fitness is: \r %0.3f \r",fitness);

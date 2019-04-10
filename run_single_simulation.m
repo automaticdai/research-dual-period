@@ -18,6 +18,7 @@ clear mex;
 % use the following commands in MATLAB to set environment
 % (change the path to your minGW installation path)
 %setenv('MW_MINGW64_LOC', 'C:\mingw-w64\mingw64')
+%setenv('MW_MINGW64_LOC', 'C:\TDM-GCC-64')
 %mex -setup C++
 
  % add paths
@@ -35,7 +36,7 @@ simu.time = 1.0;    % time of simulation
 simu.afbs_params = [0];
 
 %               [C, D, Th, Tl, alpha, idx]
-simu.taskset = [5,2000,2200,3100,50,0,     5,2000,2200,3200,50,1,   5,2000,2200,3300,50,2,   5,2200,2200,-1,-1,-1,   5,2500,2500,-1,-1,-1];
+simu.taskset = [50,200,220,310,50,0,  50,200,220,320,50,1,  50,200,220,330,50,2,  50,220,220,-1,-1,-1,  50,250,250,-1,-1,-1];
 
 % Ts reference
 tsref1 = 2.0;
@@ -48,7 +49,14 @@ tsmin2 = 1.2;
 tsmin3 = 1.2;
 
 
-init();
+% Process System Model
+sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
+sys = tf(sys_zpk);
+syscl = feedback(sys,1);
+
+bode(syscl)
+fprintf("Highiest period: %f \r", (2 * pi) / (30 * bandwidth(syscl)))
+fprintf("Lowest period: %f \r", (2 * pi) / (2 * bandwidth(syscl)))
 
 
 %% run simulation
@@ -63,7 +71,7 @@ diary(log_file_name);
 diary on;
 
 % run simulink
-sim('simu_afbs_control.mdl');
+sim('simu_afbs_control_2017.mdl');
 
 diary off;
 
@@ -78,12 +86,12 @@ if (sum(simout_status.Data == -1) == 0)
     % minimal control requirement / instable
     if (sum(settling_times > 0.95 * simu.time) || pi1.SettlingTime > tsmin1 ...
         || pi2.SettlingTime > tsmin2 || pi3.SettlingTime > tsmin3)
-        fitness = -2
+        fitness = simu.time * 3
     else
-        fitness = sum(1.0 ./ settling_times)
+        fitness = sum(settling_times)
     end
 else
-    fitness = -1
+    fitness = simu.time * 5
 end
 
 fprintf("Fitness is: \r %0.3f \r",fitness)
