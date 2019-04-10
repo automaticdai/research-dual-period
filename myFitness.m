@@ -15,7 +15,7 @@ clear mex;
 simu.time = 1.0;    % time of simulation
 simu.afbs_params = [0];
 
-U_bar = 0.50;
+U_bar = 0.20;
 
 % Ts reference
 tsref1 = 1.0;
@@ -23,9 +23,9 @@ tsref2 = 1.0;
 tsref3 = 1.0;
 
 % Ts minimal requirement
-tsmin1 = 1.0;
-tsmin2 = 1.0;
-tsmin3 = 1.0;
+tsmin1 = 1.8;
+tsmin2 = 1.8;
+tsmin3 = 1.8;
 
 % Process System Model
 sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
@@ -51,8 +51,8 @@ end
 control_index = 0:num_of_control - 1;
 control_index = control_index';
 
-x_c = ones(1,num_of_control) * 50;   % C = 5ms
-x_d = ones(1,num_of_control) * 200;  % D = 20ms
+x_c = ones(1,num_of_control) * 5;   % C = 0.5ms
+x_d = ones(1,num_of_control) * 20;  % D = 0.2ms
 
 taskset_c  = [x_c' x_d' x_decoded, control_index];
 
@@ -98,9 +98,9 @@ if (sum(simout_status.Data == -1) == 0)
     % minimal control requirement / instable
     if (sum(settling_times > 0.95 * simu.time) || pi1.SettlingTime > tsmin1 ...
         || pi2.SettlingTime > tsmin2 || pi3.SettlingTime > tsmin3)
-        fitness = sum(1.0 - settling_times) / num_of_control;
+        fitness = 0; 
     else
-        fitness = sum(1.0 - settling_times) / num_of_control;
+        fitness = sum((1.0 - settling_times) / 1.0) / num_of_control;
     end
 else
     fitness = 0.0;

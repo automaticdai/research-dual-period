@@ -7,7 +7,7 @@
 clc; clear;
 
 % for reproducability
-rng(1, 'twister')
+rng(10, 'twister')
 
 % add paths
 addpath('afbs-kernel')
@@ -29,8 +29,8 @@ ConsFcn = @myConstraints;
 
 % Optimising variables
 nVars = 9;
-LB = [200   200   0    200 200   0   200  200   0];
-UB = [500   500 100    500 500 100   500  500 100];
+LB = [10      10     0      10   10     0     10    10    0];
+UB = [200   200 100    200 200 100   200  200 100];
 
 % Optimising options
 opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize', 50,'MaxGenerations',20,'Display','iter');

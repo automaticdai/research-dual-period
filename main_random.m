@@ -14,7 +14,7 @@ fitness_best = 0;
 
 for iter = 1:num_of_iteration
     
-    fprintf("iteration: %d", iter);
+    fprintf("iteration: %d \r", iter);
     
     fitness_sum = 0;
     
