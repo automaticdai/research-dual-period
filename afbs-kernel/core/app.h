@@ -1,6 +1,8 @@
 #ifndef __APP_H_
 #define __APP_H_
 
+#include "pidcontroller.h"
+
 #define CONTROL_TASK_NUMBERS     (3)
 #define CONTROL_INPUT_NUMBERS    (3)
 #define CONTROL_OUTPUT_NUMBERS   (3)
@@ -9,6 +11,8 @@
 //#define STATES_IN_NUM          (3)
 //#define STATES_OUT_NUM         (3)
 //#define PARAM_NUM              (12)
+
+extern PID_Controller controllers[CONTROL_TASK_NUMBERS];
 
 void app_init(void);
 void app_loadtaskset(void);

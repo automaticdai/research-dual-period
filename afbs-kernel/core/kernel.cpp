@@ -36,13 +36,16 @@ static void mdlCheckParameters(SimStruct *S)
 //     ssSetErrorStatus(S, "Parameter to S-function must be nonnegative");
 //     return;
 //   }
-    mexPrintf("# of parameters (0): %d \r", mxGetNumberOfElements(PARAM_0(S))); 
-    mexPrintf("# of parameters (1): %d \r", mxGetNumberOfElements(PARAM_1(S)));
+
+    //mexPrintf("# of parameters (0): %d \r", mxGetNumberOfElements(PARAM_0(S))); 
+    //mexPrintf("# of parameters (1): %d \r", mxGetNumberOfElements(PARAM_1(S)));
+
+    afbs_set_param_num(mxGetNumberOfElements(PARAM_1(S)));
 
     for (int i = 0; i < mxGetNumberOfElements(PARAM_1(S)); i++) {
         afbs_set_param(i, mxGetPr(PARAM_1(S))[i]);
     }
-    mexPrintf("\r");
+    //mexPrintf("\r");
 }
 #endif /* MDL_CHECK_PARAMETERS */
 
@@ -66,6 +69,7 @@ static void mdlStart(SimStruct *S)
 static void mdlInitializeSizes(SimStruct *S)
 {
     /* print logs */
+    /*
  	mexPrintf("---------------------------------------------- \r");
  	mexPrintf("| AFBS-Kernel v1.0a                          | \r");
  	mexPrintf("| by Xiaotian Dai                            | \r");
@@ -75,6 +79,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
     mexPrintf("Counter: %d (check this to be 0) \r", cnt_ii);
     cnt_ii = cnt_ii + 1;
+*/
 
     /* check parameters */
     ssSetNumSFcnParams(S, 2);  /* Number of expected parameters */

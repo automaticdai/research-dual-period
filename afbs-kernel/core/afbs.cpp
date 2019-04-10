@@ -13,7 +13,7 @@
 #include "afbs.h"
 
 //#define AFBS_DEBUG_ON   (1)
-#define AFBS_WARNING_ON (1)
+//#define AFBS_WARNING_ON (1)
 
 CTask TCB[TASK_MAX_NUM];
 //enum_task_status task_status_list[TASK_MAX_NUM];
@@ -34,6 +34,7 @@ double states_out[CONTROL_OUTPUT_NUMBERS];
 
 /* s-func parameters from Simulink */
 double param[PARAM_MAX_NUM];
+int    param_num;
 
 /*----------------------------------------------------------------------------*/
 /* Kernel Related                                                             */
@@ -112,12 +113,22 @@ double afbs_state_out_load(int idx)
 void afbs_set_param(int idx, double value)
 {
     param[idx] = value;
-    mexPrintf("Parameter %i set to %f \r", idx, value);
+    //mexPrintf("Parameter %i set to %f \r", idx, value);
 }
 
 double afbs_get_param(int idx)
 {
     return param[idx];
+}
+
+void afbs_set_param_num(int param_num_)
+{
+    param_num = param_num_;
+}
+
+int afbs_get_param_num(void)
+{
+    return param_num;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -223,6 +234,7 @@ void afbs_update(void)
             if ( (TCB[i].type_ == DUAL) && (TCB[i].task_mode == 0) && (--TCB[i].tick_to_switch == 0))
             {
                 afbs_set_task_period(i, TCB[i].TL_);
+                controllers[i].set_sampling_time(TCB[i].TL_ * KERNEL_TICK_TIME);
                 #ifdef AFBS_DEBUG_ON
                     mexPrintf("[%0.4f] Task %d switched \r", afbs_get_current_time(), i);
                 #endif

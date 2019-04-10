@@ -55,6 +55,8 @@ double afbs_state_out_load(int);
 
 void   afbs_set_param(int, double);
 double afbs_get_param(int);
+void   afbs_set_param_num(int);
+int    afbs_get_param_num(void);
 
 void   afbs_performance_monitor(void);
 long   afbs_report_task_last_response_time(int task_id);
