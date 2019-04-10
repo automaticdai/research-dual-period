@@ -15,7 +15,7 @@ clear mex;
 simu.time = 1.0;    % time of simulation
 simu.afbs_params = [0];
 
-U_bar = 0.50;
+U_bar = 0.45;
 
 % Ts reference
 tsref1 = 1.0;

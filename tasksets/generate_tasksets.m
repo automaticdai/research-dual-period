@@ -7,7 +7,7 @@ rng('default')
 %% Parameters
 N = 5;                              % number of tasks
 U_bound = N * (power(2, 1/N) - 1);  % utilization boundary
-U_bar = 0.80;                        % desired utilization
+U_bar = 0.25;                        % desired utilization
 Ti_lower = 200;                     % taskset period upper bound (unit:100us)
 Ti_upper = 10000;                   % taskset period lower bound (unit:100us)
 

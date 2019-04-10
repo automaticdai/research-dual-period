@@ -212,7 +212,7 @@ void afbs_update(void)
 {
     for (int i = 0; i < TASK_MAX_NUM; i++) {
         if (TCB[i].status_ != deleted) {
-            if ((--TCB[i].r_ == 0) && (TCB[i].status_ != ready)) {
+            if ((--TCB[i].r_ <= 0) && (TCB[i].status_ != ready)) {
             //if ((TCB[i].status_ != ready) && (TCB[i].r_-- == 0) ) {
                 // check if a task missed its deadline
                 if (TCB[i].c_ != 0) {
