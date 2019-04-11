@@ -36,7 +36,9 @@ In MATLAB, `Home` -> `Open` -> 'path-to-repository'/main.c, then click `Run` on 
 
 
 ## Known Issues
-- For dual-period tasks: switch back to T^H is not implemented
 - EDF policy is not implemented
 - There is a limitation on the simulation time (as kernel_cnt is long)
 - For DUAL, control tasks have to be the highest priorities
+- For DUAL, the deadline is not equal to DUAL
+- For DUAL, the switching back too T_i^H is not implemented
+- For DUAL, the switch will be deferred to the next release

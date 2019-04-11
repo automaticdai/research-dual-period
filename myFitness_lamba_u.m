@@ -1,6 +1,6 @@
 % Fitness function
 % x = [T_H, T_L, alpha, ...]
-function y = myFitness_scalable(x)
+function y = myFitness_lamba_u(x)
 
 clear mex;
 
@@ -18,10 +18,14 @@ simu.afbs_params = [0];
 U_bar = 0.00;
 
 % Ts reference
-tsrefs = [1.0];
+tsref1 = 1.0;
+tsref2 = 1.0;
+tsref3 = 1.0;
 
 % Ts minimal requirement
-tsmins = [1.0];
+tsmin1 = 1.0;
+tsmin2 = 1.0;
+tsmin3 = 1.0;
 
 % Process System Model
 sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
@@ -38,8 +42,11 @@ load(filename);
 
 num_of_control = length(x) / 3;
 
-x_decoded = reshape(x, 3, num_of_control);
-x_decoded = x_decoded';
+x_decoded = reshape(x, num_of_control, 3);
+
+if (num_of_control ~= 1)
+    x_decoded = x_decoded';
+end
 
 control_index = 0:num_of_control - 1;
 control_index = control_index';
@@ -80,35 +87,39 @@ simout_status = get(simout,'simout_status');
 % --------------------------
 % Calculate fitness function
 % --------------------------
-control_info_a = [];
-settling_times = [];
-for i = 1:num_of_control
-    control_info = stepinfo(simout_y.Data(:,i), simout_y.Time, 'SettlingTimeThreshold',0.10);
-    control_info_a = [control_info_a control_info];
-    
-    pi = control_info.SettlingTime;
-    settling_times = [settling_times pi];
-end
+pi1 = stepinfo(simout_y.Data(:,1), simout_y.Time, 'SettlingTimeThreshold',0.02);
+pi2 = stepinfo(simout_y.Data(:,2), simout_y.Time, 'SettlingTimeThreshold',0.02);
+pi3 = stepinfo(simout_y.Data(:,3), simout_y.Time, 'SettlingTimeThreshold',0.02);
 
-%pi1 = stepinfo(simout_y.Data(:,1), simout_y.Time, 'SettlingTimeThreshold',0.02);
-%pi2 = stepinfo(simout_y.Data(:,2), simout_y.Time, 'SettlingTimeThreshold',0.02);
-%pi3 = stepinfo(simout_y.Data(:,3), simout_y.Time, 'SettlingTimeThreshold',0.02);
-%settling_times = [pi1.SettlingTime, pi2.SettlingTime, pi3.SettlingTime];
+settling_times = [pi1.SettlingTime, pi2.SettlingTime, pi3.SettlingTime];
 
 % if no exception (scheduable)
 if (sum(simout_status.Data == -1) == 0)
     % minimal control requirement / instable
-    if (sum(settling_times > 0.95 * simu.time) || sum(settling_times > tsmins))
-        fitness = 0; 
+    if (sum(settling_times > 0.95 * simu.time) || pi1.SettlingTime > tsmin1 ...
+        || pi2.SettlingTime > tsmin2 || pi3.SettlingTime > tsmin3)
+        fitness = 1.0; 
     else
-        fitness = 1 - settling_times;
+        u_total = 0.0;
+        
+        for k = 1:3
+            TiH = x(1 + 3*(k - 1)) * 10e-4;
+            TiL = x(2 + 3*(k - 1)) * 10e-4;
+            alpha = x(3 + 3*(k - 1)) / 100;
+            u_this = TiH * alpha + TiL * (1 - alpha);
+            u_total = u_total + u_this;
+        end
+        
+        fitness = u_total;
+        
     end
 else
-    fitness = 0;
+    fitness = 1.0;
 end
 
 %fprintf("Fitness is: \r %0.3f \r",fitness);
 
-y = 1 - fitness;
+
+y = fitness;
 
 end
