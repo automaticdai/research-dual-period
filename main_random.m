@@ -10,7 +10,7 @@ num_of_population = 50;
 result_fitness_best = [];
 result_fitness_mean = [];
 
-fitness_best = 0;
+fitness_best = 1.0;
 
 for iter = 1:num_of_iteration
     
@@ -21,9 +21,9 @@ for iter = 1:num_of_iteration
     for i = 1:num_of_population
         % call fitness function
         x = gen_random_param();
-        fitness = 1.0 - myFitness(x);
+        fitness = myFitness(x);
         fitness_sum = fitness_sum + fitness;
-        if (fitness > fitness_best) 
+        if (fitness < fitness_best) 
             fitness_best = fitness;
             x_best = x;
         end
