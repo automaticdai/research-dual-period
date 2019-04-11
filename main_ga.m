@@ -7,7 +7,7 @@
 clc; clear;
 
 % for reproducability
-rng(10, 'twister')
+rng(1, 'twister')
 
 % add paths
 addpath('afbs-kernel')
@@ -17,7 +17,7 @@ addpath('tasksets')
 
 % compile and init the kernel
 kernel_init()
-
+param_init()
 
 %% main code for minimising via GA
 % Ideal Point
@@ -29,8 +29,8 @@ ConsFcn = @myConstraints;
 
 % Optimising variables
 nVars = 9;
-LB = [10      10     0      10   10     0     10    10    0];
-UB = [200   200 100    200 200 100   200  200 100];
+LB = [param.T_lower      param.T_lower     0      param.T_lower    param.T_lower    0     param.T_lower    param.T_lower    0];
+UB = [param.T_upper     param.T_upper   100   param.T_upper    param.T_upper  100    param.T_upper   param.T_upper 100];
 
 % Optimising options
 opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize', 50,'MaxGenerations',20,'Display','iter');
