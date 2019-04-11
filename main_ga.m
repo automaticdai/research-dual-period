@@ -33,7 +33,7 @@ LB = [param.T_lower      param.T_lower     0      param.T_lower    param.T_lower
 UB = [param.T_upper     param.T_upper   100   param.T_upper    param.T_upper  100    param.T_upper   param.T_upper 100];
 
 % Optimising options
-opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize', 50,'MaxGenerations',20,'Display','iter');
+opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize', 100,'MaxGenerations',100,'Display','iter');
 
 %,'CrossoverFcn',@crossoversinglepoint ,'CrossoverFraction',0.8,'MutationFcn',{@mutationuniform,0.2},
 
@@ -45,3 +45,5 @@ disp(final_config);
 
 final_output = fval;
 gaExit = exitflag;
+
+beep;

@@ -2,10 +2,10 @@
 
 clc; clear;
 
-rng(1, 'twister')
+rng(20, 'twister')
 
-num_of_iteration = 20;
-num_of_population = 50;
+num_of_iteration =100;
+num_of_population = 100;
 
 result_fitness_best = [];
 result_fitness_mean = [];
@@ -36,3 +36,5 @@ end
 result_fitness_best
 result_fitness_mean
 x_best
+
+beep;
