@@ -15,7 +15,7 @@ clear mex;
 simu.time = 1.2;    % time of simulation
 simu.afbs_params = [0];
 
-U_bar = 0.00;
+U_bar = 0.19;
 Ci = 50;
 Di = 150;
 
@@ -25,9 +25,9 @@ tsref2 = 1.0;
 tsref3 = 1.0;
 
 % Ts minimal requirement
-tsmin1 = 1.0;
-tsmin2 = 1.0;
-tsmin3 = 1.0;
+tsmin1 = 0.6;
+tsmin2 = 0.6;
+tsmin3 = 0.6;
 
 % Process System Model
 sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
@@ -112,7 +112,7 @@ if (sum(simout_status.Data == -1) == 0)
             u_total = u_total + u_this;
         end
         
-        fitness = u_total;
+        fitness = u_total + U_bar;
         
     end
 else
