@@ -6,7 +6,7 @@ clear mex;
 % Parameters
 % --------------------------
 
-x = [200 200 100 150 250 50];
+x = [90 90 100 150 150 100 220 220 100];
 
 
 % unit: 10us
@@ -49,7 +49,7 @@ end
 control_index = 0:num_of_control - 1;
 control_index = control_index';
 
-x_c = ones(1,num_of_control) * 50;   % C = 0.5ms
+x_c = [50 50 50];   % C = 0.5ms
 x_d = ones(1,num_of_control) * 150;  % D = 0.2ms
 
 taskset_c  = [x_c' x_d' x_decoded, control_index];
@@ -107,6 +107,6 @@ end
 %fprintf("Fitness is: \r %0.3f \r",fitness);
 
 
-y = 1.0 - fitness;
+settling_times
 
 
