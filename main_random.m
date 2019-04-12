@@ -4,7 +4,7 @@ clc; clear;
 
 rng(20, 'twister')
 
-num_of_iteration = 30;
+num_of_iteration = 100;
 num_of_population = 100;
 
 result_fitness_best = [];
