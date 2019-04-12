@@ -4,7 +4,7 @@ clc; clear;
 
 rng(20, 'twister')
 
-num_of_iteration =100;
+num_of_iteration = 30;
 num_of_population = 100;
 
 result_fitness_best = [];
@@ -21,7 +21,7 @@ for iter = 1:num_of_iteration
     for i = 1:num_of_population
         % call fitness function
         x = gen_random_param();
-        fitness = myFitness(x);
+        fitness = myFitness_lamba_u(x);
         fitness_sum = fitness_sum + fitness;
         if (fitness < fitness_best) 
             fitness_best = fitness;

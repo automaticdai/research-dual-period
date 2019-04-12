@@ -24,16 +24,16 @@ param_init()
 
 
 % objective and constraint functions
-objFcn = @myFitness;
+objFcn = @myFitness_lamba_u;
 ConsFcn = @myConstraints;
 
 % Optimising variables
 nVars = 9;
-LB = [param.T_lower      param.T_lower     0      param.T_lower    param.T_lower    0     param.T_lower    param.T_lower    0];
-UB = [param.T_upper     param.T_upper   100   param.T_upper    param.T_upper  100    param.T_upper   param.T_upper 100];
+LB = [param.T_lower      param.T_lower  0     param.T_lower    param.T_lower  0      param.T_lower   param.T_lower   0];
+UB = [param.T_upper     param.T_upper   100   param.T_upper    param.T_upper  100    param.T_upper   param.T_upper   100];
 
 % Optimising options
-opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize', 100,'MaxGenerations',100,'Display','iter');
+opts = optimoptions('ga','PlotFcn',@gaplotbestf, 'PopulationSize', 100,'MaxGenerations',30,'Display','iter');
 
 %,'CrossoverFcn',@crossoversinglepoint ,'CrossoverFraction',0.8,'MutationFcn',{@mutationuniform,0.2},
 

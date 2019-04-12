@@ -16,6 +16,8 @@ simu.time = 1.2;    % time of simulation
 simu.afbs_params = [0];
 
 U_bar = 0.00;
+Ci = 50;
+Di = 150;
 
 % Ts reference
 tsref1 = 1.0;
@@ -23,9 +25,9 @@ tsref2 = 1.0;
 tsref3 = 1.0;
 
 % Ts minimal requirement
-tsmin1 = 1.0;
-tsmin2 = 1.0;
-tsmin3 = 1.0;
+tsmin1 = 0.7;
+tsmin2 = 0.7;
+tsmin3 = 0.7;
 
 % Process System Model
 sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
@@ -51,8 +53,8 @@ end
 control_index = 0:num_of_control - 1;
 control_index = control_index';
 
-x_c = ones(1,num_of_control) * 50;   % C = 0.5ms
-x_d = ones(1,num_of_control) * 150;  % D = 0.2ms
+x_c = ones(1,num_of_control) * Ci;   % C = 0.5ms
+x_d = ones(1,num_of_control) * Di;  % D = 0.2ms
 
 taskset_c  = [x_c' x_d' x_decoded, control_index];
 
@@ -103,10 +105,10 @@ if (sum(simout_status.Data == -1) == 0)
         u_total = 0.0;
         
         for k = 1:3
-            TiH = x(1 + 3*(k - 1)) * 10e-4;
-            TiL = x(2 + 3*(k - 1)) * 10e-4;
+            TiH = x(1 + 3*(k - 1));
+            TiL = x(2 + 3*(k - 1));
             alpha = x(3 + 3*(k - 1)) / 100;
-            u_this = TiH * alpha + TiL * (1 - alpha);
+            u_this = (Ci / TiH) * alpha + (Ci / TiL) * (1 - alpha);
             u_total = u_total + u_this;
         end
         
