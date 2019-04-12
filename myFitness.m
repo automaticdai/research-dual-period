@@ -16,6 +16,8 @@ simu.time = 1.2;    % time of simulation
 simu.afbs_params = [0];
 
 U_bar = 0.30;
+Ci = 50;
+Di = 150;
 
 % Ts reference
 tsref1 = 1.0;
@@ -51,8 +53,8 @@ end
 control_index = 0:num_of_control - 1;
 control_index = control_index';
 
-x_c = ones(1,num_of_control) * 50;   % C = 0.5ms
-x_d = ones(1,num_of_control) * 150;  % D = 0.2ms
+x_c = ones(1,num_of_control) * Ci;   % C = 0.5ms
+x_d = ones(1,num_of_control) * Di;  % D = 0.2ms
 
 taskset_c  = [x_c' x_d' x_decoded, control_index];
 

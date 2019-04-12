@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.166"
+    ComputedModelVersion    "1.167"
     NumModelReferences	    0
     NumTestPointedSignals   0
     NumProvidedFunctions    0
@@ -57,7 +57,7 @@ Model {
       $ObjectID		      3
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [318.0, 38.0, 1290.0, 934.0]
+      Location		      [318.0, 38.0, 1307.0, 904.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		4
@@ -82,7 +82,7 @@ Model {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[1236.0, 753.0]
+	Extents			[1253.0, 726.0]
 	ZoomFactor		[2.0]
 	Offset			[220.72666727701846, 154.76666666666688]
       }
@@ -105,7 +105,7 @@ Model {
       "AAAAAAA+wAAABYARABvAGMAawBXAGkAZABnAGUAdAA0AAAAAAD/////AAAAAAAAAAD7AAAAUgBHAEwAVQBFADIAIAB0AHIAZQBlACAAYwBvAG0Ac"
       "ABvAG4AZQBuAHQALwBHAEwAVQBFADIAIAB0AHIAZQBlACAAYwBvAG0AcABvAG4AZQBuAHQAAAAAAP////8AAABjAP///wAAAAEAAAAAAAAAAPwCA"
       "AAAAfsAAABUAEcATABVAEUAMgA6AFAAcgBvAHAAZQByAHQAeQBJAG4AcwBwAGUAYwB0AG8AcgAvAFAAcgBvAHAAZQByAHQAeQAgAEkAbgBzAHAAZ"
-      "QBjAHQAbwByAAAAAAD/////AAABrAD///8AAAT6AAADLAAAAAEAAAACAAAAAQAAAAL8AAAAAQAAAAIAAAAP/////wAAAAAA/////wAAAAAAAAAA/"
+      "QBjAHQAbwByAAAAAAD/////AAABrAD///8AAAULAAADDgAAAAEAAAACAAAAAQAAAAL8AAAAAQAAAAIAAAAP/////wAAAAAA/////wAAAAAAAAAA/"
       "////wEAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/"
       "////wEAAAB5/////wAAAAAAAAAA/////wEAAADa/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wEAAAFT/////wAAAAAAAAAA/"
       "////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wEAAANS/////wAAAAAAAAAA/"
@@ -119,9 +119,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "Steven"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Wed Apr 10 13:49:56 2019"
-  RTWModifiedTimeStamp	  476804993
-  ModelVersionFormat	  "1.%<AutoIncrement:166>"
+  LastModifiedDate	  "Fri Apr 12 02:17:08 2019"
+  RTWModifiedTimeStamp	  476936220
+  ModelVersionFormat	  "1.%<AutoIncrement:167>"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
   LibraryLinkDisplay	  "disabled"
@@ -1175,7 +1175,7 @@ Model {
   }
   System {
     Name		    "simu_afbs_for_publish"
-    Location		    [318, 38, 1608, 972]
+    Location		    [318, 38, 1625, 942]
     Open		    on
     PortBlocksUseCompactNotation off
     SetExecutionDomain	    off
@@ -1199,7 +1199,7 @@ Model {
       Name		      "Add"
       SID		      "69"
       Ports		      [2, 1]
-      Position		      [530, 250, 550, 270]
+      Position		      [485, 250, 505, 270]
       ZOrder		      51
       FontName		      "Arial"
       FontSize		      12
@@ -1213,7 +1213,7 @@ Model {
       BlockType		      Step
       Name		      "Disturbance"
       SID		      "67"
-      Position		      [245, 180, 275, 210]
+      Position		      [265, 200, 295, 230]
       ZOrder		      50
       FontName		      "Arial"
       FontSize		      12
@@ -1431,7 +1431,7 @@ Model {
       Name		      "Plant Models"
       SID		      "41"
       Ports		      [1, 1]
-      Position		      [595, 216, 685, 304]
+      Position		      [540, 216, 630, 304]
       ZOrder		      36
       BackgroundColor	      "[0.090196, 0.819608, 0.662745]"
       FontName		      "Arial"
@@ -1587,7 +1587,7 @@ Model {
       BlockType		      Step
       Name		      "Reference"
       SID		      "70"
-      Position		      [245, 270, 275, 300]
+      Position		      [265, 270, 295, 300]
       ZOrder		      52
       FontName		      "Arial"
       FontSize		      12
@@ -1599,7 +1599,7 @@ Model {
       Name		      "output_all"
       SID		      "52"
       Ports		      [1]
-      Position		      [745, 243, 775, 277]
+      Position		      [675, 243, 705, 277]
       ZOrder		      38
       FontName		      "Arial"
       FontSize		      12
@@ -1631,7 +1631,7 @@ Model {
       Name		      "periods"
       SID		      "60"
       Ports		      [1]
-      Position		      [530, 343, 560, 377]
+      Position		      [480, 343, 510, 377]
       ZOrder		      42
       FontName		      "Arial"
       FontSize		      12
@@ -1675,7 +1675,7 @@ Model {
       Name		      "schedule"
       SID		      "39"
       Ports		      [1]
-      Position		      [530, 283, 560, 317]
+      Position		      [480, 283, 510, 317]
       ZOrder		      34
       FontName		      "Arial"
       FontSize		      12
@@ -1715,7 +1715,7 @@ Model {
       Name		      "status"
       SID		      "72"
       Ports		      [1]
-      Position		      [530, 403, 560, 437]
+      Position		      [480, 403, 510, 437]
       ZOrder		      53
       FontName		      "Arial"
       FontSize		      12
@@ -1763,22 +1763,22 @@ Model {
       SrcPort		      1
       Points		      [16, 0]
       Branch {
-	ZOrder			506
-	DstBlock		"output_all"
-	DstPort			1
-      }
-      Branch {
-	ZOrder			457
-	Points			[0, 202; -443, 0; 0, -102]
+	ZOrder			515
+	Points			[0, 202; -379, 0; 0, -102]
 	DstBlock		"FPS-DUAL"
 	DstPort			2
+      }
+      Branch {
+	ZOrder			514
+	DstBlock		"output_all"
+	DstPort			1
       }
     }
     Line {
       ZOrder		      247
       SrcBlock		      "FPS-DUAL"
       SrcPort		      3
-      Points		      [35, 0; 0, 20]
+      Points		      [10, 0]
       DstBlock		      "periods"
       DstPort		      1
     }
@@ -1793,7 +1793,7 @@ Model {
       ZOrder		      418
       SrcBlock		      "Disturbance"
       SrcPort		      1
-      Points		      [260, 0]
+      Points		      [195, 0]
       DstBlock		      "Add"
       DstPort		      1
     }
@@ -1815,7 +1815,7 @@ Model {
       ZOrder		      461
       SrcBlock		      "FPS-DUAL"
       SrcPort		      4
-      Points		      [35, 0; 0, 40]
+      Points		      [3, 0; 0, 40]
       DstBlock		      "status"
       DstPort		      1
     }
