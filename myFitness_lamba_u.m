@@ -25,9 +25,9 @@ tsref2 = 1.0;
 tsref3 = 1.0;
 
 % Ts minimal requirement
-tsmin1 = 0.7;
-tsmin2 = 0.7;
-tsmin3 = 0.7;
+tsmin1 = 1.0;
+tsmin2 = 1.0;
+tsmin3 = 1.0;
 
 % Process System Model
 sys_zpk = zpk([],[0.1+5i, 0.1-5i], 15);
