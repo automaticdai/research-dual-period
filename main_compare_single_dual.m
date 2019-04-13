@@ -6,7 +6,7 @@ clear mex;
 % Parameters
 % --------------------------
 
-x = [90 90 100 150 150 100 220 220 100];
+x = [100 350 30 150 150 100 220 220 100];
 
 
 % unit: 10us
@@ -74,11 +74,11 @@ simu.taskset = taskset_inv(:);
 assignin('base','simu',simu)
 assignin('base','sys',sys)
 
-mdl_name = 'simu_afbs_control_2017.mdl';
+mdl_name = 'simu_afbs_control.mdl';
 %open_system(mdl);
 %set_param(gcs,'SimulationCommand','Update')
 simout = sim(mdl_name, 'SimulationMode','normal', 'SrcWorkspace','current');
-
+simout_u = get(simout,'simout_u');
 simout_y = get(simout,'simout_y');
 simout_status = get(simout,'simout_status');
 
@@ -109,4 +109,12 @@ end
 
 settling_times
 
+y = simout_y.Data(:,1);
+t = simout_y.Time;
+u = simout_u.Data(:,1);
+
+subplot(2,1,1)
+plot(t,y)
+subplot(2,1,2)
+plot(t,u);
 

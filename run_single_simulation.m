@@ -71,7 +71,7 @@ diary(log_file_name);
 diary on;
 
 % run simulink
-sim('simu_afbs_control_2017.mdl');
+sim('simu_afbs_control.mdl');
 
 diary off;
 

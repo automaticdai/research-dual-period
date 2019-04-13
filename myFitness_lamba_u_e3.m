@@ -77,7 +77,7 @@ simu.taskset = taskset_inv(:);
 assignin('base','simu',simu)
 assignin('base','sys',sys)
 
-mdl_name = 'simu_afbs_control_2017.mdl';
+mdl_name = 'simu_afbs_control.mdl';
 %open_system(mdl);
 %set_param(gcs,'SimulationCommand','Update')
 simout = sim(mdl_name, 'SimulationMode','normal', 'SrcWorkspace','current');
