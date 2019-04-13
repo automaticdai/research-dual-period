@@ -4,9 +4,9 @@ function [] = task_allocation_greedy(experiment)
 
 %experiment = 1; % 1 for single, 2 for dual
 if (experiment == 1)
-    util_candidates = [0.10 0.13 0.16 0.19];
+    util_candidates = [0.10 0.13 0.16 0.19]; 
 else
-    util_candidates = [0.10 0.13 0.16 0.19 0.22];
+    util_candidates = [0.10 0.13 0.16 0.19 0.22]; 
 end
     
 single_best_x = [170,170,100,220,220,100,200,200,100; ...
@@ -41,27 +41,32 @@ for idx = 1:numel(util_candidates)
         filename = sprintf("taskset_db_%d.mat", taskset_idx);
         load(filename); % taskset_db, the 20 candidate tasks       
         
+        taskset_nc_temp = taskset_nc;
+        
         % iterative each task in taskset.db
         % try to fit into the original taskset
         num_addition = 0;
         fit_best = 1.0;
+        total_util = util_candidates(idx) ;
         
         for i = 1:20
             % get *one* task candidate
             new_task = taskset_db(i, :);
+            new_util = new_task(1) / new_task(2);
+            total_util = total_util + new_util;
             
             % fit into the overall taskset
-            taskset_nc = [taskset_nc; new_task];
+            taskset_nc_temp = [taskset_nc_temp; new_task];
             
             % save dataset to the automation task queue.file
             % by saving it to taskset_u_0.00.mat
             save('taskset_u_0.00.mat', 'taskset_nc')
             
             % find run fitness function
-            fit = myFitness_lamba_u(x);
+            fit = myFitness_lamba_u_e3(x, total_util);
             
             % if unschedulable, break, and ignore the rest candidates
-            if (fit == 1)
+            if (fit >= 1.0)
                 break
             else
                 fit_best = fit;
