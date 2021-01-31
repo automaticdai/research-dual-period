@@ -46,3 +46,17 @@ In MATLAB, `Home` -> `Open` -> 'path-to-repository'/main.c, then click `Run` on 
 - For DUAL, the deadline is not equal to DUAL
 - For DUAL, the switching back too T_i^H is not implemented
 - For DUAL, the switch will be deferred to the next release
+
+## Citation
+```text
+@article{dai2019dual,
+  title={A dual-mode strategy for performance-maximisation and resource-efficient CPS design},
+  author={Dai, Xiaotian and Chang, Wanli and Zhao, Shuai and Burns, Alan},
+  journal={ACM Transactions on Embedded Computing Systems (TECS)},
+  volume={18},
+  number={5s},
+  pages={1--20},
+  year={2019},
+  publisher={ACM New York, NY, USA}
+}
+```
